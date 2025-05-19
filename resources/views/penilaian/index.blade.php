@@ -1,0 +1,126 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="space-y-4">
+    <div class="space-y-6">
+        <div class="flex flex-row items-center justify-between">
+            <div class="flex flex-row items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-pen-to-square text-3xl opacity-60"></i>
+                    <h1 class="text-3xl opacity-50">Data Penilaian</h1>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <!-- Notifikasi -->
+            @if(session('success'))
+            <div id="notificationAlert" class="flex justify-between items-center bg-green-200 py-4 px-6 rounded-md">
+                <p class="font-semibold opacity-50">
+                    {{ session('success') }}
+                </p>
+                <button onclick="document.getElementById('notificationAlert').style.display='none'" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            @endif
+
+            <div class="w-full h-full shadow-xl">
+                <div class="flex items-center space-x-2 px-6 py-4 bg-[#F8F8F8] text-[#FFAE00] border-b-2 border-black-100 ">
+                    <i class="text-base fa-solid fa-table"></i>
+                    <h1 class="text-lg font-semibold opacity-75">Daftar Data Penilaian</h1>
+                </div>
+                <div class="px-6 py-6 space-y-4 bg-white">
+                    <div class="flex justify-between">
+                        <form action="{{ route('penilaian.index') }}" method="GET" class="flex items-center space-x-2 font-semibold opacity-50">
+                            <!-- ENTRIES -->
+                            <h1>Show</h1>
+                            <select name="entries" id="entries" onchange="this.form.submit()" class="border border-gray-400 rounded px-2 py-1 text-sm">
+                                @foreach([5, 10, 15, 20] as $value)
+                                <option value="{{ $value }}" {{ request('entries', 5) == $value ? 'selected' : '' }}>{{ $value }}</option>
+                                @endforeach
+                            </select>
+                            <h1>entries</h1>
+                        </form>
+
+                        <form action="{{ route('penilaian.index') }}" method="GET" class="flex items-center space-x-2 font-semibold opacity-50">
+                            <!-- SEARCH -->
+                            <h1>Search:</h1>
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                class="border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="">
+                        <table class="w-full border-2 border-gray-300 text-center">
+                            <thead>
+                                <tr class="bg-[#FFAE00] text-white text-base font-bold">
+                                    <th class="px-4 py-2 border">No</th>
+                                    <th class="px-4 py-2 border">Kode Alternatif</th>
+                                    <th class="px-4 py-2 border">Nama Alternatif</th>
+                                    <th class="px-4 py-2 border">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($alternatifs as $index => $alternatif)
+                                <tr class="font-semibold">
+                                    <td class="px-4 py-2 border opacity-50">{{ $index + $alternatifs->firstItem() }}</td>
+                                    <td class="px-4 py-2 border opacity-50">{{ $alternatif->kode_alternatif }}</td>
+                                    <td class="px-4 py-2 border opacity-50">{{ $alternatif->nama_alternatif }}</td>
+                                    <td class="px-4 py-2 border flex justify-center items-center">
+                                        @if($alternatif->has_nilai)
+                                        <!-- EDIT DATA -->
+                                        <a href="{{ route('penilaian.edit', ['id' => $alternatif->id_alternatif]) }}">
+                                            <button class="flex items-center justify-center text-white bg-[#FFAE00] w-20 py-1 rounded-sm space-x-1">
+                                                <i class="fa-solid fa-pen-to-square font-bold text-xs"></i>
+                                                <span class="text-sm font-medium pb-1">Edit</span>
+                                            </button>
+                                        </a>
+                                        @else
+                                        <!-- Create DATA -->
+                                        <a href="{{ route('penilaian.create', ['id' => $alternatif->id_alternatif]) }}">
+                                            <button class="flex items-center justify-center text-white bg-teal-600 w-20 py-1 rounded-sm space-x-1">
+                                                <i class="fa-solid fa-plus font-bold text-xs"></i>
+                                                <span class="text-sm font-medium pb-1">Create</span>
+                                            </button>
+                                        </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="px-4 py-2 border text-center">Tidak ada data alternatif</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex items-center justify-between font-semibold">
+                        <h1 class="opacity-50">
+                            Showing {{ $alternatifs->firstItem() ?? 0 }} to {{ $alternatifs->lastItem() ?? 0 }} of {{ $alternatifs->total() }} entries
+                        </h1>
+                        <!-- PAGINATION -->
+                        <div class="flex">
+                            {{ $alternatifs->appends(request()->query())->links('pagination.custom') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Close notification after 5 seconds
+    setTimeout(function() {
+        const notification = document.getElementById('notificationAlert');
+        if (notification) {
+            notification.style.display = 'none';
+        }
+    }, 5000);
+</script>
+@endsection

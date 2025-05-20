@@ -18,18 +18,6 @@
             </a>
         </div>
         <div class="flex flex-col space-y-4">
-            <!-- Validation Errors -->
-            @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <ul>
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
             <form action="{{ route('kriteria.update', $kriteria->id_kriteria) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -46,8 +34,11 @@
                                     type="text"
                                     name="kode"
                                     value="{{ old('kode', $kriteria->kode) }}"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border @error('kode') border-red-500 @else border-gray-400 @enderror rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
+                                @error('kode')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Nama Kriteria</h1>
@@ -55,8 +46,11 @@
                                     type="text"
                                     name="nama"
                                     value="{{ old('nama', $kriteria->nama) }}"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border @error('nama') border-red-500 @else border-gray-400 @enderror rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
+                                @error('nama')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="flex items-center justify-between space-x-8">
@@ -69,19 +63,25 @@
                                     step="0.01"
                                     min="0"
                                     max="100"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border @error('bobot') border-red-500 @else border-gray-400 @enderror rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
+                                @error('bobot')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Jenis Kriteria</h1>
                                 <select
                                     name="jenis"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border @error('jenis') border-red-500 @else border-gray-400 @enderror rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
                                     <option value="" disabled>-- Pilih --</option>
                                     <option value="Benefit" {{ old('jenis', $kriteria->jenis) == 'Benefit' ? 'selected' : '' }}>Benefit</option>
                                     <option value="Cost" {{ old('jenis', $kriteria->jenis) == 'Cost' ? 'selected' : '' }}>Cost</option>
                                 </select>
+                                @error('jenis')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>

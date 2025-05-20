@@ -40,15 +40,18 @@ class KriteriaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kode' => 'required|unique:kriterias,kode|max:10',
-            'nama' => 'required|max:100',
+            'nama' => 'required|unique:kriterias,nama|max:100',
             'bobot' => 'required|numeric|min:0|max:100',
             'jenis' => 'required|in:Benefit,Cost',
+        ], [
+            'kode.unique' => 'Kode Kriteria Sudah Digunakan',
+            'nama.unique' => 'Nama Kriteria Sudah Digunakan',
         ]);
 
         // No need to generate ID, it will be auto-incremented
-        Kriteria::create($validated);
+        Kriteria::create($request->all());
 
         return redirect()->route('kriteria.index')
             ->with('success', 'Data Berhasil Disimpan');
@@ -79,14 +82,25 @@ class KriteriaController extends Controller
     {
         $kriteria = Kriteria::findOrFail($id);
 
-        $validated = $request->validate([
-            'kode' => ['required', 'max:10', Rule::unique('kriterias')->ignore($kriteria->id_kriteria, 'id_kriteria')],
-            'nama' => 'required|max:100',
+        $request->validate([
+            'kode' => [
+                'required',
+                'max:10',
+                Rule::unique('kriterias')->ignore($kriteria->id_kriteria, 'id_kriteria')
+            ],
+            'nama' => [
+                'required',
+                'max:100',
+                Rule::unique('kriterias')->ignore($kriteria->id_kriteria, 'id_kriteria')
+            ],
             'bobot' => 'required|numeric|min:0|max:100',
             'jenis' => 'required|in:Benefit,Cost',
+        ], [
+            'kode.unique' => 'Kode Kriteria Sudah Digunakan',
+            'nama.unique' => 'Nama Kriteria Sudah Digunakan',
         ]);
 
-        $kriteria->update($validated);
+        $kriteria->update($request->all());
 
         return redirect()->route('kriteria.index')
             ->with('success', 'Data Berhasil DiUpdate');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SubKriteriaController extends Controller
 {
@@ -45,8 +46,18 @@ class SubKriteriaController extends Controller
     {
         $validated = $request->validate([
             'id_kriteria' => 'required|exists:kriterias,id_kriteria',
-            'nama_subkriteria' => 'required|max:100',
+            'nama_subkriteria' => [
+                'required',
+                'max:100',
+                Rule::unique('sub_kriterias')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('id_kriteria', $request->id_kriteria);
+                    })
+            ],
             'nilai' => 'required|integer|min:1',
+        ], [
+            'nama_subkriteria.unique' => 'Nama Sub Kriteria sudah digunakan',
+            'nilai.min' => 'Nilai tidak boleh 0',
         ]);
 
         SubKriteria::create($validated);
@@ -83,8 +94,19 @@ class SubKriteriaController extends Controller
         $subkriteria = SubKriteria::findOrFail($id);
 
         $validated = $request->validate([
-            'nama_subkriteria' => 'required|max:100',
+            'nama_subkriteria' => [
+                'required',
+                'max:100',
+                Rule::unique('sub_kriterias', 'nama_subkriteria')
+                    ->where(function ($query) use ($subkriteria) {
+                        return $query->where('id_kriteria', $subkriteria->id_kriteria);
+                    })
+                    ->ignore($id, 'id_subkriteria')
+            ],
             'nilai' => 'required|integer|min:1',
+        ], [
+            'nama_subkriteria.unique' => 'Nama Sub Kriteria sudah digunakan',
+            'nilai.min' => 'Nilai harus lebih dari 0',
         ]);
 
         $subkriteria->update($validated);

@@ -14,7 +14,7 @@ class AlternatifController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('entries', 10);
+        $perPage = $request->input('entries', 5);
 
         $alternatifs = Alternatif::when($search, function ($query) use ($search) {
             $query->where('kode_alternatif', 'like', "%{$search}%")
@@ -39,13 +39,16 @@ class AlternatifController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kode_alternatif' => 'required|unique:alternatifs,kode_alternatif|max:10',
-            'nama_alternatif' => 'required|max:100',
+            'nama_alternatif' => 'required|unique:alternatifs,nama_alternatif|max:100',
+        ], [
+            'kode_alternatif.unique' => 'Kode Alternatif Sudah Digunakan',
+            'nama_alternatif.unique' => 'Nama Alternatif Sudah Digunakan',
         ]);
 
         // No need to generate ID, it will be auto-incremented
-        Alternatif::create($validated);
+        Alternatif::create($request->all());
 
         return redirect()->route('alternatif.index')
             ->with('success', 'Data Berhasil Disimpan');
@@ -76,12 +79,23 @@ class AlternatifController extends Controller
     {
         $alternatif = Alternatif::findOrFail($id);
 
-        $validated = $request->validate([
-            'kode_alternatif' => ['required', 'max:10', Rule::unique('alternatifs')->ignore($alternatif->id_alternatif, 'id_alternatif')],
-            'nama_alternatif' => 'required|max:100',
+        $request->validate([
+            'kode_alternatif' => [
+                'required',
+                'max:10',
+                Rule::unique('alternatifs')->ignore($alternatif->id_alternatif, 'id_alternatif')
+            ],
+            'nama_alternatif' => [
+                'required',
+                'max:100',
+                Rule::unique('alternatifs')->ignore($alternatif->id_alternatif, 'id_alternatif')
+            ],
+        ], [
+            'kode_alternatif.unique' => 'Kode Alternatif Sudah Digunakan',
+            'nama_alternatif.unique' => 'Nama Alternatif Sudah Digunakan',
         ]);
 
-        $alternatif->update($validated);
+        $alternatif->update($request->all());
 
         return redirect()->route('alternatif.index')
             ->with('success', 'Data Berhasil DiUpdate');

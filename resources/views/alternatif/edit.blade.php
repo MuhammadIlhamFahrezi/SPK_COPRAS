@@ -18,18 +18,6 @@
             </a>
         </div>
         <div class="flex flex-col space-y-4">
-            <!-- Validation Errors -->
-            @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <ul>
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
             <form action="{{ route('alternatif.update', $alternatif->id_alternatif) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -48,6 +36,9 @@
                                     value="{{ old('kode_alternatif', $alternatif->kode_alternatif) }}"
                                     class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
+                                @error('kode_alternatif')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Nama Alternatif</h1>
@@ -57,6 +48,9 @@
                                     value="{{ old('nama_alternatif', $alternatif->nama_alternatif) }}"
                                     class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
+                                @error('nama_alternatif')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>

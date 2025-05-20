@@ -194,29 +194,44 @@
 
     <!-- Logout confirmation popup -->
     <div id="logoutConfirmation" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-start justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl mt-16 w-96 transform -translate-y-full opacity-0">
-            <div class="border-b px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Konfirmasi Logout</h3>
-                    <button type="button" id="closeLogoutPopup" class="text-gray-400 hover:text-gray-500">
-                        <i class="fas fa-times text-xl"></i>
+        <div class="bg-white rounded-sm shadow-xl mt-16 w-[500px] transform -translate-y-full opacity-0">
+            <div class="px-6 py-4 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="font-semibold opacity-50 text-xl">Ready to Leave</h1>
+                    <button type="button" id="closeLogoutPopup" class="text-lg font-bold opacity-60 hover:opacity-100">
+                        <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-            </div>
-            <div class="p-6">
-                <p class="text-gray-700 mb-6">Apakah Anda yakin ingin keluar dari sistem?</p>
+                <div class="border-t border-b py-6">
+                    <h1 class="text-base font-semibold opacity-50">Apakah Anda yakin ingin keluar dari sistem?</h1>
+                </div>
                 <div class="flex justify-end space-x-4">
-                    <button type="button" id="cancelLogout" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                        Batal
-                    </button>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="px-4 py-2 bg-red-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700">
-                            Logout
+                    <div class="flex justify-center items-center py-2 w-24 bg-[#FFAE00] rounded-sm hover:bg-[#F4A600]">
+                        <button type="button" id="cancelLogout" class="flex justify-center items-center space-x-2">
+                            <span class="text-white font-bold">
+                                <i class="fa-solid fa-xmark"></i>
+                            </span>
+                            <span class="text-white font-semibold">
+                                <h1>Cancel</h1>
+                            </span>
                         </button>
+                    </div>
+                    <form action="{{ route('logout') }}" method="POST">
+                        <div class="flex justify-center items-center py-2 w-24 bg-red-600 hover:bg-red-700 rounded-sm">
+                            @csrf
+                            <button type="submit" class="flex justify-center items-center space-x-2 hover:">
+                                <span class="text-white font-bold">
+                                    <i class="fa-solid fa-sign-out-alt"></i>
+                                </span>
+                                <span class="text-white font-semibold">
+                                    <h1>Logout</h1>
+                                </span>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 

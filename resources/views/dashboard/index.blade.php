@@ -7,7 +7,7 @@
             <i class="fas fa-house-chimney text-3xl opacity-60"></i>
             <h1 class="text-3xl opacity-50">Dashboard</h1>
         </div>
-        <div id="welcomeAlert" class="flex justify-between items-center bg-green-200 py-4 px-6 rounded-md">
+        <div id="welcomeAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
             <p class="font-semibold opacity-50">
                 Selamat Datang <span class="font-bold">{{ auth()->user()->nama_lengkap }}!</span>.
                 Silakan gunakan menu di sidebar untuk mengakses fitur yang tersedia.

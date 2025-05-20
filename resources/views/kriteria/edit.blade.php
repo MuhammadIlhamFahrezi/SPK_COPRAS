@@ -78,7 +78,7 @@
                                     name="jenis"
                                     class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
-                                    <option value="" disabled></option>
+                                    <option value="" disabled>-- Pilih --</option>
                                     <option value="Benefit" {{ old('jenis', $kriteria->jenis) == 'Benefit' ? 'selected' : '' }}>Benefit</option>
                                     <option value="Cost" {{ old('jenis', $kriteria->jenis) == 'Cost' ? 'selected' : '' }}>Cost</option>
                                 </select>

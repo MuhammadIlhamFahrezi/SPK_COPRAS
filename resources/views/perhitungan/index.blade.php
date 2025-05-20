@@ -15,8 +15,8 @@
         </div>
 
         @if($noData)
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
-            <p>{{ $message }}</p>
+        <div class="lex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm" role="alert">
+            <p class="font-semibold opacity-50">{{ $message }}</p>
         </div>
         @else
         <div class="flex flex-col space-y-8">
@@ -297,7 +297,7 @@
                     </div>
                     <div class="flex justify-between items-center bg-green-200 py-4 px-6 rounded-md">
                         <p class="font-semibold opacity-75">
-                            Nilai Max Q = {{ $utilityDegreeData['maxQ'] }}
+                            Nilai Max Qi = {{ $utilityDegreeData['maxQ'] }}
                         </p>
                     </div>
 

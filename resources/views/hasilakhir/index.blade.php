@@ -21,8 +21,8 @@
         </div>
 
         @if($noData)
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
-            <p>{{ $message }}</p>
+        <div class="lex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm" role="alert">
+            <p class="font-semibold opacity-50">{{ $message }}</p>
         </div>
         @else
         <div class="flex flex-col space-y-8">
@@ -37,22 +37,22 @@
                         <table class="w-full border-2 border-gray-300 text-center">
                             <thead>
                                 <tr class="bg-[#FFAE00] text-white text-base font-bold">
-                                    <th class="w-16 px-4 py-2 border">Peringkat</th>
                                     <th class="w-16 px-4 py-2 border">Kode</th>
                                     <th class="px-4 py-2 border">Alternatif</th>
                                     <th class="w-48 px-4 py-2 border">Nilai Utilitas (%)</th>
+                                    <th class="w-16 px-4 py-2 border">Peringkat</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($finalRanking as $index => $row)
                                 <tr>
-                                    <td class="px-4 py-2 border font-bold opacity-75">
-                                        {{ $row['rank'] }}
-                                    </td>
                                     <td class="px-4 py-2 border opacity-75">{{ $row['kode_alternatif'] }}</td>
                                     <td class="px-4 py-2 border opacity-75 text-left">{{ $row['nama_alternatif'] }}</td>
                                     <td class="px-4 py-2 border font-semibold opacity-75">
                                         {{ $row['nilai_u'] }}%
+                                    </td>
+                                    <td class="px-4 py-2 border font-bold opacity-75">
+                                        {{ $row['rank'] }}
                                     </td>
                                 </tr>
                                 @endforeach

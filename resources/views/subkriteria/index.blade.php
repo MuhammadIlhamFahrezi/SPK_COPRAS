@@ -12,7 +12,7 @@
         <div class="flex flex-col space-y-4">
             <!-- Notifikasi -->
             @if(session('success'))
-            <div id="successAlert" class="flex justify-between items-center bg-green-200 py-4 px-6 rounded-md">
+            <div id="successAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
                 <p class="font-semibold opacity-50">
                     {{ session('success') }}
                 </p>

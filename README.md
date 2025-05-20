@@ -8,9 +8,22 @@
 
 ## About Copras
 
-Sistem Pendukung Keputusan (SPK) merupakan suatu sistem informasi spesifik yang ditujukan untuk membantu manajemen dalam mengambil keputusan yang berkaitan dengan persoalan yang bersifat semi terstruktur.
+### Decision Support System with COPRAS Method
 
-Metode Complex Proportional Assessment (COPRAS) mengasumsikan ketergantungan langsung dan proporsional dari tingkat signifikansi dan utilitas dari alternatif yang ada dengan adanya kriteria yang saling bertentangan. Ini memperhitungkan kinerja alternatif sehubungan dengan kriteria yang berbeda dan juga bobot kriteria yang sesuai. Metode ini memilih keputusan terbaik mengingat solusi ideal dan ideal-terburuk.
+This application is an advanced Decision Support System (DSS) designed to facilitate complex decision-making processes in semi-structured environments. It leverages the powerful **Complex Proportional Assessment (COPRAS)** methodology to provide robust, data-driven recommendations.
+
+### What makes COPRAS powerful?
+
+The COPRAS method excels at handling multi-criteria decision problems where both beneficial criteria (higher values are better) and cost criteria (lower values are better) must be considered simultaneously. This sophisticated approach:
+
+-   Evaluates alternatives against multiple weighted criteria
+-   Handles contradictory criteria effectively
+-   Considers both maximizing and minimizing parameters
+-   Determines proportional direct and transitive dependencies
+-   Calculates utility degrees of alternatives with mathematical precision
+-   Produces a clear ranking of options based on comprehensive analysis
+
+COPRAS delivers superior results compared to simpler decision methods by balancing positive and negative ideal solutions, making it ideal for complex organizational decision-making processes that require systematic evaluation of multiple factors.
 
 ## Project Structure
 
@@ -153,7 +166,6 @@ CREATE TABLE user (
 ## Installation Guide
 
 1. Place the project in htdocs directory
-
 2. Run the following commands:
 
     ```

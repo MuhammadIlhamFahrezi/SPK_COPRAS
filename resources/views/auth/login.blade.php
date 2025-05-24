@@ -49,30 +49,32 @@
                         Login Account
                     </h1>
                 </div>
-                @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <span class="block sm:inline">{{ session('error') }}</span>
-                </div>
-                @endif
                 <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
                     @csrf
                     <div class="w-full">
                         <input type="email" name="email" placeholder="Email" required
-                            class="w-full p-3 px-8 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            class="w-full p-3 px-8 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror"
+                            value="{{ old('email') }}" />
                         @error('email')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-sm mt-2 ml-4">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
                     <div class="w-full">
                         <input type="password" name="password" placeholder="Password" required
-                            class="w-full p-3 px-8 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            class="w-full p-3 px-8 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror" />
                         @error('password')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-sm mt-2 ml-4">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
                     <div class="flex justify-center items-center">
                         <button type="submit"
-                            class="w-full py-4 bg-[#FFAE00] rounded-full flex justify-center items-center space-x-4">
+                            class="w-full py-4 bg-[#FFAE00] rounded-full flex justify-center items-center space-x-4 hover:bg-[#e69d00] transition-all duration-300">
                             <div class="text-white">
                                 <i class="fas fa-sign-in-alt"></i>
                             </div>

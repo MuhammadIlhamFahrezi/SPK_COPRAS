@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -34,17 +36,37 @@ class AuthController extends Controller
             'password.min' => 'Password minimal harus 8 karakter',
         ]);
 
-        // Add debug output to see what's happening
+        // Cek apakah email ada di database
+        $user = User::where('email', $credentials['email'])->first();
+
+        $errors = [];
+
+        // Jika user tidak ditemukan, email salah
+        if (!$user) {
+            $errors['email'] = 'Email salah';
+        } else {
+            // Jika user ditemukan, cek password
+            if (!Hash::check($credentials['password'], $user->password)) {
+                $errors['password'] = 'Password salah';
+            }
+        }
+
+        // Jika ada error, kembalikan dengan pesan error
+        if (!empty($errors)) {
+            throw ValidationException::withMessages($errors);
+        }
+
+        // Jika semua benar, login user
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
 
+        // Fallback jika terjadi error tidak terduga
         throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
+            'email' => 'Login gagal, silakan coba lagi',
         ]);
     }
-
 
     /**
      * Handle logout request

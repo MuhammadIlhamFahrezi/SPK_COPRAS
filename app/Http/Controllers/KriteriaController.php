@@ -14,7 +14,7 @@ class KriteriaController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('entries', 10);
+        $perPage = $request->input('entries', 5);
 
         $kriterias = Kriteria::when($search, function ($query) use ($search) {
             $query->where('kode', 'like', "%{$search}%")

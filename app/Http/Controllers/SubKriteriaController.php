@@ -15,7 +15,7 @@ class SubKriteriaController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('entries', 10);
+        $perPage = $request->input('entries', 5);
 
         // Get all kriterias with their sub-kriterias
         $kriterias = Kriteria::with(['subkriterias' => function ($query) use ($search) {

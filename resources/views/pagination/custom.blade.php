@@ -10,7 +10,7 @@
         </div>
         @else
         <div>
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="relative inline-flex items-center px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50" aria-label="@lang('pagination.previous')">
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="relative inline-flex items-center px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 hover:text-red-500" aria-label="@lang('pagination.previous')">
                 <i class="fas fa-chevron-left"></i>
             </a>
         </div>
@@ -34,7 +34,7 @@
         </div>
         @else
         <div>
-            <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">{{ $page }}</a>
+            <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 hover:text-red-500">{{ $page }}</a>
         </div>
         @endif
         @endforeach
@@ -44,7 +44,7 @@
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
         <div>
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="relative inline-flex items-center px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50" aria-label="@lang('pagination.next')">
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="relative inline-flex items-center px-4 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 hover:text-red-500" aria-label="@lang('pagination.next')">
                 <i class="fas fa-chevron-right"></i>
             </a>
         </div>

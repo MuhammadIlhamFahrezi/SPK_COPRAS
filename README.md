@@ -8,6 +8,12 @@
 
 ## About Copras
 
+Metode COmplex PRoportional Assessment COPRAS diperkenalkan oleh Zavadskas pada tahun 1994 (Zavadskas et al., 1994) biasanya diterapkan dalam keadaan di mana pembuat keputusan dipaksa untuk memilih di antara banyak alternatif sambil mempertimbangkan serangkaian kriteria yang biasanya saling bertentangan
+
+Gagasan COPRAS dipelopori oleh Zavadskas et al. untuk memecahkan masalah MCDA secara efektif. Hasil utama dari pendekatan COPRAS adalah sebagai berikut: (1) penerapannya sederhana; (2) mempertimbangkan rasio terhadap opsi dan solusi ideal, pada saat yang sama; dan (3) mengembalikan hasilnya dalam waktu singkat. (Mardani et al., 2023)
+
+Metode COmplex PRoportional Assessment (COPRAS) menggunakan peringkat bertahap dan mengevaluasi prosedur alternatif dalam hal signifikansi dan tingkat utilitas. Metode COPRAS memiliki kemampuan untuk memperhitungkan kriteria positif (menguntungkan) dan negatif (tidak menguntungkan), yang dapat dinilai secara terpisah dalam proses evaluasi (Makhesana, 2015). Metode ini lebih unggul dari metode lain karena metode ini dapat digunakan untuk menghitung tingkat utilitas alternatif yang menunjukkan sejauh mana satu alternatif lebih baik atau lebih buruk dari pada alternatif lain yang diambil untuk perbandingan. ( Aan et al, 2017)
+
 ### Decision Support System with COPRAS Method
 
 This application is an advanced Decision Support System (DSS) designed to facilitate complex decision-making processes in semi-structured environments. It leverages the powerful **Complex Proportional Assessment (COPRAS)** methodology to provide robust, data-driven recommendations.

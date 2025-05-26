@@ -25,7 +25,8 @@ class PerhitunganController extends Controller
         if ($kriterias->isEmpty() || $alternatifs->isEmpty()) {
             return view('perhitungan.index', [
                 'noData' => true,
-                'message' => 'Data kriteria atau alternatif masih kosong. Silahkan tambahkan data terlebih dahulu.'
+                'kriterias' => collect(),
+                'alternatifs' => collect()
             ]);
         }
 

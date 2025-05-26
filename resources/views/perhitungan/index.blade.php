@@ -1,5 +1,3 @@
-<!-- views/perhitungan/index.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -14,9 +12,10 @@
             </div>
         </div>
 
-        @if($noData)
-        <div class="lex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm" role="alert">
-            <p class="font-semibold opacity-50">{{ $message }}</p>
+        @if($kriterias->isEmpty() || $alternatifs->isEmpty())
+        <div class="flex items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm space-x-1" role="alert">
+            <p class="font-extrabold opacity-50">Data Kriteria atau Alternatif</p>
+            <p class="font-semibold opacity-50">masih kosong. Silahkan tambahkan data terlebih dahulu.</p>
         </div>
         @else
         <div class="flex flex-col space-y-8">
@@ -300,7 +299,6 @@
                             Nilai Max Qi = {{ $utilityDegreeData['maxQ'] }}
                         </p>
                     </div>
-
                 </div>
             </div>
 

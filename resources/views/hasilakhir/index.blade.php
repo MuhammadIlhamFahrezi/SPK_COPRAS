@@ -1,5 +1,3 @@
-<!-- views/hasilakhir/index.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -9,20 +7,15 @@
             <div class="flex flex-row items-center">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-chart-line text-3xl opacity-60"></i>
-                    <h1 class="text-3xl opacity-50">Hasil Akhir Perangkingan</h1>
+                    <h1 class="text-3xl opacity-50">Data Hasil Akhir</h1>
                 </div>
-            </div>
-            <div>
-                <a href="{{ route('perhitungan.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow flex items-center space-x-2">
-                    <i class="fas fa-calculator"></i>
-                    <span>Lihat Detail Perhitungan</span>
-                </a>
             </div>
         </div>
 
-        @if($noData)
-        <div class="lex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm" role="alert">
-            <p class="font-semibold opacity-50">{{ $message }}</p>
+        @if($kriterias->isEmpty() || $alternatifs->isEmpty())
+        <div class="flex items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm space-x-1" role="alert">
+            <p class="font-extrabold opacity-50">Data Kriteria atau Alternatif</p>
+            <p class="font-semibold opacity-50">masih kosong. Silahkan tambahkan data terlebih dahulu.</p>
         </div>
         @else
         <div class="flex flex-col space-y-8">
@@ -45,13 +38,13 @@
                             </thead>
                             <tbody>
                                 @foreach($finalRanking as $index => $row)
-                                <tr>
-                                    <td class="px-4 py-2 border opacity-75">{{ $row['kode_alternatif'] }}</td>
-                                    <td class="px-4 py-2 border opacity-75 text-left">{{ $row['nama_alternatif'] }}</td>
-                                    <td class="px-4 py-2 border font-semibold opacity-75">
+                                <tr class="font-semibold">
+                                    <td class="px-4 py-2 border opacity-60">{{ $row['kode_alternatif'] }}</td>
+                                    <td class="px-4 py-2 border opacity-60 text-left">{{ $row['nama_alternatif'] }}</td>
+                                    <td class="px-4 py-2 border font-semibold opacity-60">
                                         {{ $row['nilai_u'] }}%
                                     </td>
-                                    <td class="px-4 py-2 border font-bold opacity-75">
+                                    <td class="px-4 py-2 border font-bold opacity-60">
                                         {{ $row['rank'] }}
                                     </td>
                                 </tr>

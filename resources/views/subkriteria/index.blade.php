@@ -1,3 +1,4 @@
+<!-- views/subkriteria/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -9,19 +10,26 @@
                 <h1 class="text-3xl opacity-50">Data Sub Kriteria</h1>
             </div>
         </div>
-        <div class="flex flex-col space-y-4">
-            <!-- Notifikasi -->
-            @if(session('success'))
-            <div id="successAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
-                <p class="font-semibold opacity-50">
-                    {{ session('success') }}
-                </p>
-                <button onclick="document.getElementById('successAlert').style.display='none'" class="text-gray-500">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            @endif
 
+        <!-- Notifikasi -->
+        @if(session('success'))
+        <div id="notificationAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
+            <p class="font-semibold opacity-50">
+                {{ session('success') }}
+            </p>
+            <button onclick="document.getElementById('notificationAlert').style.display='none'" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        @endif
+
+        @if($kriterias->isEmpty())
+        <div class="flex items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm space-x-1" role="alert">
+            <p class="font-extrabold opacity-50">Data Kriteria</p>
+            <p class="font-semibold opacity-50">masih kosong. Silahkan tambahkan data terlebih dahulu.</p>
+        </div>
+        @else
+        <div class="flex flex-col space-y-8">
             <!-- Loop through each kriteria and its sub-kriteria -->
             @foreach($kriterias as $kriteria)
             <div class="flex flex-col space-y-8">
@@ -53,12 +61,20 @@
                                     <td class="px-4 py-2 border opacity-50">{{ $subkriteria->nama_subkriteria }}</td>
                                     <td class="px-4 py-2 border opacity-50">{{ $subkriteria->nilai }}</td>
                                     <td class="px-4 py-2 border">
-                                        <a href="{{ route('subkriteria.edit', $subkriteria->id_subkriteria) }}" class="bg-[#FFAE00] w-8 h-8 rounded-sm inline-flex items-center justify-center">
-                                            <i class="fas fa-pen-to-square text-base text-center text-white"></i>
+                                        <!-- EDIT DATA -->
+                                        <a href="{{ route('subkriteria.edit', $subkriteria->id_subkriteria) }}">
+                                            <button class="bg-[#FFAE00] w-8 h-8 rounded-sm">
+                                                <i class="fas fa-pen-to-square text-base text-center text-white"></i>
+                                            </button>
                                         </a>
-                                        <button type="button" onclick="showDeleteConfirmation('{{ $subkriteria->id_subkriteria }}')" class="bg-red-500 w-8 h-8 rounded-sm inline-flex items-center justify-center">
+                                        <!-- HAPUS DATA -->
+                                        <button class="bg-red-500 w-8 h-8 rounded-sm" onclick="confirmDelete('{{ $subkriteria->id_subkriteria }}', '{{ $subkriteria->nama_subkriteria }}')">
                                             <i class="fas fa-trash text-base text-center text-white"></i>
                                         </button>
+                                        <form id="delete-form-{{ $subkriteria->id_subkriteria }}" action="{{ route('subkriteria.destroy', $subkriteria->id_subkriteria) }}" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </td>
                                 </tr>
                                 @empty
@@ -70,43 +86,61 @@
                         </table>
                     </div>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
+        @endif
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        <h2 class="text-lg font-bold mb-4">Konfirmasi Penghapusan</h2>
-        <p class="mb-6">Apakah Anda yakin ingin menghapus data ini? Proses ini tidak dapat dibatalkan.</p>
-        <div class="flex justify-end space-x-3">
-            <button onclick="hideDeleteConfirmation()" class="px-4 py-2 bg-gray-300 rounded-md">Batal</button>
-            <form id="deleteForm" method="POST" action="">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md">Hapus</button>
-            </form>
+<!-- Delete Confirmation Dialog -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-md shadow-lg max-w-lg w-full space-y-6">
+        <h2 class="font-semibold opacity-50 text-xl">Konfirmasi Penghapusan</h2>
+        <div class="border-t border-b py-6">
+            <p class="text-gray-600">Apakah Anda yakin ingin menghapus sub kriteria <span id="deleteItemName" class="font-bold"></span>?</p>
+        </div>
+        <div class="flex justify-end space-x-4">
+            <button type="button" onclick="closeDeleteModal()" class="flex justify-center items-center py-2 w-24 rounded-sm border border-[#FFAE00]">
+                <span class="text-[#FFAE00] font-semibold">
+                    <h1>Cancel</h1>
+                </span>
+            </button>
+            <button type="button" onclick="submitDelete()" class="flex justify-center items-center py-2 w-24 rounded-sm bg-red-600 hover:bg-red-700">
+                <span class="text-white font-semibold">
+                    <h1>Hapus</h1>
+                </span>
+            </button>
         </div>
     </div>
 </div>
 
 <script>
-    function showDeleteConfirmation(id) {
-        document.getElementById('deleteForm').action = `/subkriteria/${id}`;
+    let currentDeleteId = null;
+
+    function confirmDelete(id, name) {
+        currentDeleteId = id;
+        document.getElementById('deleteItemName').textContent = name;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
 
-    function hideDeleteConfirmation() {
+    function closeDeleteModal() {
         document.getElementById('deleteModal').classList.add('hidden');
+        currentDeleteId = null;
     }
 
-    // Auto-hide success alert after 5 seconds
+    function submitDelete() {
+        if (currentDeleteId) {
+            document.getElementById('delete-form-' + currentDeleteId).submit();
+        }
+        closeDeleteModal();
+    }
+
+    // Close notification after 5 seconds
     setTimeout(function() {
-        const alertElement = document.getElementById('successAlert');
-        if (alertElement) {
-            alertElement.style.display = 'none';
+        const notification = document.getElementById('notificationAlert');
+        if (notification) {
+            notification.style.display = 'none';
         }
     }, 5000);
 </script>

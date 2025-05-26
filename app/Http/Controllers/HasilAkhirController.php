@@ -25,7 +25,9 @@ class HasilAkhirController extends Controller
         if ($kriterias->isEmpty() || $alternatifs->isEmpty()) {
             return view('hasilakhir.index', [
                 'noData' => true,
-                'message' => 'Data kriteria atau alternatif masih kosong. Silahkan tambahkan data terlebih dahulu.'
+                'kriterias' => collect(),
+                'alternatifs' => collect(),
+                'finalRanking' => collect()
             ]);
         }
 
@@ -33,6 +35,8 @@ class HasilAkhirController extends Controller
         $utilityDegreeData = $this->coprasService->getUtilityDegree();
 
         return view('hasilakhir.index', [
+            'kriterias' => $kriterias,
+            'alternatifs' => $alternatifs,
             'finalRanking' => $utilityDegreeData['utility'],
             'noData' => false
         ]);

@@ -11,19 +11,26 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-col space-y-4">
-            <!-- Notifikasi -->
-            @if(session('success'))
-            <div id="notificationAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
-                <p class="font-semibold opacity-50">
-                    {{ session('success') }}
-                </p>
-                <button onclick="document.getElementById('notificationAlert').style.display='none'" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            @endif
 
+        <!-- Notifikasi -->
+        @if(session('success'))
+        <div id="notificationAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
+            <p class="font-semibold opacity-50">
+                {{ session('success') }}
+            </p>
+            <button onclick="document.getElementById('notificationAlert').style.display='none'" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        @endif
+
+        @if($alternatifs->isEmpty())
+        <div class="flex items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm space-x-1" role="alert">
+            <p class="font-extrabold opacity-50">Data Alternatif</p>
+            <p class="font-semibold opacity-50">masih kosong. Silahkan tambahkan data terlebih dahulu.</p>
+        </div>
+        @else
+        <div class="flex flex-col space-y-4">
             <div class="w-full h-full shadow-xl">
                 <div class="flex items-center space-x-2 px-6 py-4 bg-[#F8F8F8] text-[#FFAE00] border-b-2 border-black-100 ">
                     <i class="text-base fa-solid fa-table"></i>
@@ -85,7 +92,7 @@
                                         <a href="{{ route('penilaian.create', ['id' => $alternatif->id_alternatif]) }}">
                                             <button class="flex items-center justify-center text-white bg-teal-600 w-20 py-1 rounded-sm space-x-1">
                                                 <i class="fa-solid fa-plus font-bold text-xs"></i>
-                                                <span class="text-sm font-medium pb-1">Create</span>
+                                                <span class="text-sm font-medium pb-1">Input</span>
                                             </button>
                                         </a>
                                         @endif
@@ -111,6 +118,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </div>
 

@@ -32,7 +32,7 @@
                         <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                             <h1>{{ $kriteria->nama }}</h1>
                             <select name="nilai[{{ $kriteria->id_kriteria }}]" class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <option value="" disabled selected>--Pilih--</option>
+                                <option value="" disabled selected>-- Pilih --</option>
                                 @foreach($kriteria->subkriterias as $subkriteria)
                                 <option value="{{ $subkriteria->id_subkriteria }}">
                                     {{ $subkriteria->nama_subkriteria }} (Nilai: {{ $subkriteria->nilai }})

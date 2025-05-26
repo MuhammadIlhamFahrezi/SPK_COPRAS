@@ -194,7 +194,7 @@
 
     <!-- Logout confirmation popup -->
     <div id="logoutConfirmation" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-start justify-center z-50">
-        <div class="bg-white rounded-sm shadow-xl mt-16 w-[500px] transform -translate-y-full opacity-0">
+        <div class="bg-white rounded-sm shadow-xl mt-16 max-w-lg w-full transform -translate-y-full opacity-0">
             <div class="px-6 py-4 space-y-6">
                 <div class="flex justify-between items-center">
                     <h1 class="font-semibold opacity-50 text-xl">Ready to Leave</h1>

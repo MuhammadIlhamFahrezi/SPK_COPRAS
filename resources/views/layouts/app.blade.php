@@ -206,28 +206,24 @@
                     <h1 class="text-base font-semibold opacity-50">Apakah Anda yakin ingin keluar dari sistem?</h1>
                 </div>
                 <div class="flex justify-end space-x-4">
-                    <div class="flex justify-center items-center py-2 w-24 bg-[#FFAE00] rounded-sm hover:bg-[#F4A600]">
-                        <button type="button" id="cancelLogout" class="flex justify-center items-center space-x-2">
+                    <button type="button" id="cancelLogout" class="flex justify-center items-center py-2 w-24 bg-[#FFAE00] rounded-sm hover:bg-[#F4A600] space-x-2">
+                        <span class="text-white font-bold">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                        <span class="text-white font-semibold">
+                            <h1>Cancel</h1>
+                        </span>
+                    </button>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="flex justify-center items-center py-2 w-24 bg-red-600 hover:bg-red-700 rounded-sm space-x-2">
                             <span class="text-white font-bold">
-                                <i class="fa-solid fa-xmark"></i>
+                                <i class="fa-solid fa-sign-out-alt"></i>
                             </span>
                             <span class="text-white font-semibold">
-                                <h1>Cancel</h1>
+                                <h1>Logout</h1>
                             </span>
                         </button>
-                    </div>
-                    <form action="{{ route('logout') }}" method="POST">
-                        <div class="flex justify-center items-center py-2 w-24 bg-red-600 hover:bg-red-700 rounded-sm">
-                            @csrf
-                            <button type="submit" class="flex justify-center items-center space-x-2 hover:">
-                                <span class="text-white font-bold">
-                                    <i class="fa-solid fa-sign-out-alt"></i>
-                                </span>
-                                <span class="text-white font-semibold">
-                                    <h1>Logout</h1>
-                                </span>
-                            </button>
-                        </div>
                     </form>
                 </div>
             </div>

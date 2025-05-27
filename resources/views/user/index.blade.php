@@ -127,15 +127,21 @@
 
 <!-- Delete Confirmation Dialog -->
 <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Penghapusan</h2>
-        <p class="mb-6 text-gray-600">Apakah Anda yakin ingin menghapus user <span id="deleteItemName" class="font-bold"></span>?</p>
+    <div class="bg-white p-8 rounded-md shadow-lg max-w-lg w-full space-y-6">
+        <h2 class="font-semibold opacity-50 text-xl">Konfirmasi Penghapusan</h2>
+        <div class="border-t border-b py-6">
+            <p class="text-gray-600">Apakah Anda yakin ingin menghapus user <span id="deleteItemName" class="font-bold"></span>?</p>
+        </div>
         <div class="flex justify-end space-x-4">
-            <button onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                Batal
+            <button type="button" onclick="closeDeleteModal()" class="flex justify-center items-center py-2 w-24 rounded-sm border border-[#FFAE00]">
+                <span class="text-[#FFAE00] font-semibold">
+                    <h1>Cancel</h1>
+                </span>
             </button>
-            <button onclick="submitDelete()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                Hapus
+            <button type="button" onclick="submitDelete()" class="flex justify-center items-center py-2 w-24 rounded-sm bg-red-600 hover:bg-red-700">
+                <span class="text-white font-semibold">
+                    <h1>Hapus</h1>
+                </span>
             </button>
         </div>
     </div>

@@ -63,7 +63,7 @@ class SubKriteriaController extends Controller
         SubKriteria::create($validated);
 
         return redirect()->route('subkriteria.index')
-            ->with('success', 'Data Berhasil Disimpan');
+            ->with('success', 'Data Sub Kriteria Berhasil Disimpan');
     }
 
     /**
@@ -112,7 +112,7 @@ class SubKriteriaController extends Controller
         $subkriteria->update($validated);
 
         return redirect()->route('subkriteria.index')
-            ->with('success', 'Data Berhasil DiUpdate');
+            ->with('success', 'Data Sub Kriteria Berhasil Diupdate');
     }
 
     /**
@@ -124,6 +124,6 @@ class SubKriteriaController extends Controller
         $subkriteria->delete();
 
         return redirect()->route('subkriteria.index')
-            ->with('success', 'Data Berhasil Dihapus');
+            ->with('success', 'Data Sub Kriteria Berhasil Dihapus');
     }
 }

@@ -54,7 +54,7 @@ class KriteriaController extends Controller
         Kriteria::create($request->all());
 
         return redirect()->route('kriteria.index')
-            ->with('success', 'Data Berhasil Disimpan');
+            ->with('success', 'Data Kriteria Berhasil Disimpan');
     }
 
     /**
@@ -103,7 +103,7 @@ class KriteriaController extends Controller
         $kriteria->update($request->all());
 
         return redirect()->route('kriteria.index')
-            ->with('success', 'Data Berhasil DiUpdate');
+            ->with('success', 'Data Kriteria Berhasil Diupdate');
     }
 
     /**
@@ -115,6 +115,6 @@ class KriteriaController extends Controller
         $kriteria->delete();
 
         return redirect()->route('kriteria.index')
-            ->with('success', 'Data Berhasil Dihapus');
+            ->with('success', 'Data Kriteria Berhasil Dihapus');
     }
 }

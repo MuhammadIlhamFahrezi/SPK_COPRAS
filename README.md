@@ -188,11 +188,20 @@ CREATE TABLE user (
 
 4. If step 3 fails, manually drop the database and run step 2 again
 
-5. Start the application:
+5. To seed a specific seeder class only (e.g., UserSeeder or AlternatifSeeder):
+    ```
+    php artisan db:seed --class=SeederClassName
+    ```
+    Example:
+    ```
+    php artisan db:seed --class=UserSeeder
+    php artisan db:seed --class=AlternatifSeeder
+    ```
+6. Start the application:
     ```
     php artisan serve
     ```
-6. Access the application by visiting:
+7. Access the application by visiting:
     ```
     http://127.0.0.1:8000
     ```

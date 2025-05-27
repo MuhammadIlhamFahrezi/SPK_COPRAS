@@ -1,3 +1,4 @@
+<!-- views/penilaian/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -81,12 +82,22 @@
                                     <td class="px-4 py-2 border flex justify-center items-center">
                                         @if($alternatif->has_nilai)
                                         <!-- EDIT DATA -->
-                                        <a href="{{ route('penilaian.edit', ['id' => $alternatif->id_alternatif]) }}">
-                                            <button class="flex items-center justify-center text-white bg-[#FFAE00] w-20 py-1 rounded-sm space-x-1">
-                                                <i class="fa-solid fa-pen-to-square font-bold text-xs"></i>
-                                                <span class="text-sm font-medium pb-1">Edit</span>
+                                        <div class="flex flex-row justify-center items-center space-x-1">
+                                            <a href="{{ route('penilaian.edit', ['id' => $alternatif->id_alternatif]) }}">
+                                                <button class="flex items-center justify-center text-white bg-[#FFAE00] w-20 py-1 rounded-sm space-x-1">
+                                                    <i class="fa-solid fa-pen-to-square font-bold text-xs"></i>
+                                                    <span class="text-sm font-medium pb-1">Edit</span>
+                                                </button>
+                                            </a>
+                                            <button class="flex items-center justify-center text-white bg-red-500 w-20 py-1 rounded-sm space-x-1" onclick="confirmDelete('{{ $alternatif->id_alternatif }}', '{{ $alternatif->nama_alternatif }}')">
+                                                <i class="fa-solid fa-trash font-bold text-xs"></i>
+                                                <span class="text-sm font-medium pb-1">Hapus</span>
                                             </button>
-                                        </a>
+                                            <form id="delete-form-{{ $alternatif->id_alternatif }}" action="{{ route('penilaian.destroy', $alternatif->id_alternatif) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </div>
                                         @else
                                         <!-- Create DATA -->
                                         <a href="{{ route('penilaian.create', ['id' => $alternatif->id_alternatif]) }}">
@@ -122,7 +133,49 @@
     </div>
 </div>
 
+<!-- Delete Confirmation Dialog -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-md shadow-lg max-w-lg w-full space-y-6">
+        <h2 class="font-semibold opacity-50 text-xl">Konfirmasi Penghapusan</h2>
+        <div class="border-t border-b py-6">
+            <p class="text-gray-600">Apakah Anda yakin ingin menghapus penilaian untuk <span id="deleteItemName" class="font-bold"></span>?</p>
+        </div>
+        <div class="flex justify-end space-x-4">
+            <button type="button" onclick="closeDeleteModal()" class="flex justify-center items-center py-2 w-24 rounded-sm border border-[#FFAE00]">
+                <span class="text-[#FFAE00] font-semibold">
+                    <h1>Cancel</h1>
+                </span>
+            </button>
+            <button type="button" onclick="submitDelete()" class="flex justify-center items-center py-2 w-24 rounded-sm bg-red-600 hover:bg-red-700">
+                <span class="text-white font-semibold">
+                    <h1>Hapus</h1>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
+    let currentDeleteId = null;
+
+    function confirmDelete(id, name) {
+        currentDeleteId = id;
+        document.getElementById('deleteItemName').textContent = name;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        currentDeleteId = null;
+    }
+
+    function submitDelete() {
+        if (currentDeleteId) {
+            document.getElementById('delete-form-' + currentDeleteId).submit();
+        }
+        closeDeleteModal();
+    }
+
     // Close notification after 5 seconds
     setTimeout(function() {
         const notification = document.getElementById('notificationAlert');

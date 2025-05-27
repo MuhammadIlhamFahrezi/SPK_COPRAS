@@ -51,7 +51,7 @@ class AlternatifController extends Controller
         Alternatif::create($request->all());
 
         return redirect()->route('alternatif.index')
-            ->with('success', 'Data Berhasil Disimpan');
+            ->with('success', 'Data Alternatif Berhasil Disimpan');
     }
 
     /**
@@ -98,7 +98,7 @@ class AlternatifController extends Controller
         $alternatif->update($request->all());
 
         return redirect()->route('alternatif.index')
-            ->with('success', 'Data Berhasil DiUpdate');
+            ->with('success', 'Data Alternatif Berhasil Diupdate');
     }
 
     /**
@@ -110,6 +110,6 @@ class AlternatifController extends Controller
         $alternatif->delete();
 
         return redirect()->route('alternatif.index')
-            ->with('success', 'Data Berhasil Dihapus');
+            ->with('success', 'Data Alternatif Berhasil Dihapus');
     }
 }

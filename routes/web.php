@@ -55,6 +55,7 @@ Route::middleware('auth.user')->group(function () {
         Route::post('/penilaian', [PenilaianController::class, 'store'])->name('penilaian.store');
         Route::get('/penilaian/edit', [PenilaianController::class, 'edit'])->name('penilaian.edit');
         Route::put('/penilaian', [PenilaianController::class, 'update'])->name('penilaian.update');
+        Route::delete('/penilaian/{id}', [PenilaianController::class, 'destroy'])->name('penilaian.destroy');
 
         // Perhitungan
         Route::get('/perhitungan', [PerhitunganController::class, 'index'])->name('perhitungan.index');

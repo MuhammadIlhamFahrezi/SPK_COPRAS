@@ -81,7 +81,7 @@ class PenilaianController extends Controller
         }
 
         return redirect()->route('penilaian.index')
-            ->with('success', 'Data penilaian berhasil disimpan.');
+            ->with('success', 'Data Penilaian Berhasil Disimpan.');
     }
 
     /**
@@ -146,6 +146,26 @@ class PenilaianController extends Controller
         }
 
         return redirect()->route('penilaian.index')
-            ->with('success', 'Data penilaian berhasil diupdate.');
+            ->with('success', 'Data Penilaian Berhasil Diupdate.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        try {
+            // Find the alternatif
+            $alternatif = Alternatif::findOrFail($id);
+
+            // Delete all nilai alternatif for this alternatif
+            NilaiAlternatif::where('id_alternatif', $id)->delete();
+
+            return redirect()->route('penilaian.index')
+                ->with('success', 'Data Penilaian Berhasil Dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('penilaian.index')
+                ->with('error', 'Gagal Menghapus Data Penilaian.');
+        }
     }
 }

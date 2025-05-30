@@ -171,24 +171,67 @@ CREATE TABLE user (
 
 ## Installation Guide
 
-1. Place the project in htdocs directory
-2. Run the following commands:
+1. Go to the htdocs folder
+   Open C:\xampp\htdocs using File Explorer or a terminal.
+
+2. Open Command Prompt (CMD) in the htdocs folder, then clone the Laravel repository:
+
+    ```
+    git clone https://github.com/MuhammadIlhamFahrezi/SPK_COPRAS.git
+    ```
+
+3. Navigate to the Laravel project directory:
+
+    ```
+    cd SPK_COPRAS
+    ```
+
+4. Install Laravel dependencies using Composer:
+
+    ```
+    composer install
+    ```
+
+5. Copy .env.example to .env:
+
+    ```
+    cp .env.example .env
+    ```
+
+6. Edit your .env file to match your database configuration:
+
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=Copras_V1
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
+
+7. Generate the application key:
+
+    ```
+    php artisan key:generate
+    ```
+
+8. Run the following commands:
 
     ```
     php artisan migrate
     php artisan db:seed
     ```
 
-3. If you need to update the data:
+9. If you need to update the data:
 
     ```
     php artisan migrate:refresh
     php artisan db:seed
     ```
 
-4. If step 3 fails, manually drop the database and run step 2 again
+10. If step 3 fails, manually drop the database and run step 2 again
 
-5. To seed a specific seeder class only (e.g., UserSeeder or AlternatifSeeder):
+11. To seed a specific seeder class only (e.g., UserSeeder or AlternatifSeeder):
     ```
     php artisan db:seed --class=SeederClassName
     ```
@@ -197,11 +240,11 @@ CREATE TABLE user (
     php artisan db:seed --class=UserSeeder
     php artisan db:seed --class=AlternatifSeeder
     ```
-6. Start the application:
+12. Start the application:
     ```
     php artisan serve
     ```
-7. Access the application by visiting:
+13. Access the application by visiting:
     ```
     http://127.0.0.1:8000
     ```

@@ -253,6 +253,12 @@ CREATE TABLE user (
 
 Login credentials can be found in `Database/Seeder/UserSeeder.php`
 
+## TEAM
+
+1. M. Ilham Fahrezi
+2. Anjuan Kaisar
+3. Rayner Aditya
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

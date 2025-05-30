@@ -21,19 +21,19 @@
         <!-- Menu untuk Admin -->
         <div class="flex flex-row justify-between">
             <a href="{{ route('kriteria.index') }}" class="sidebar-item {{ request()->routeIs('kriteria.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-cyan-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#FFD93D] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Kriteria</h1>
                     <i class="fas fa-cube text-3xl text-center opacity-25"></i>
                 </div>
             </a>
             <a href="{{ route('subkriteria.index') }}" class="sidebar-item {{ request()->routeIs('subkriteria.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-blue-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#6BCB77] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Sub Kriteria</h1>
                     <i class="fas fa-cubes text-3xl text-center opacity-25"></i>
                 </div>
             </a>
             <a href="{{ route('alternatif.index') }}" class="sidebar-item {{ request()->routeIs('alternatif.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-green-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#4D96FF] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Alternatif</h1>
                     <i class="fas fa-users text-3xl text-center opacity-25"></i>
                 </div>
@@ -41,19 +41,19 @@
         </div>
         <div class="flex flex-row justify-between">
             <a href="{{ route('penilaian.index') }}" class="sidebar-item {{ request()->routeIs('penilaian.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-gray-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#FF922B] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Penilaian</h1>
                     <i class="fas fa-pen-to-square text-3xl text-center opacity-25"></i>
                 </div>
             </a>
             <a href="{{ route('perhitungan.index') }}" class="sidebar-item {{ request()->routeIs('perhitungan.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-orange-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#845EC2] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Perhitungan</h1>
                     <i class="fas fa-calculator text-3xl text-center opacity-25"></i>
                 </div>
             </a>
             <a href="{{ route('hasilakhir.index') }}" class="sidebar-item {{ request()->routeIs('hasilakhir.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-red-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#00C9A7] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Hasil Akhir</h1>
                     <i class="fas fa-chart-line text-3xl text-center opacity-25"></i>
                 </div>
@@ -63,20 +63,20 @@
         <!-- Menu untuk User -->
         <div class="flex flex-row justify-between">
             <a href="{{ route('dashboard') }}" class="sidebar-item {{ request()->routeIs('') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-red-400 bg-white rounded-md">
-                    <h1 class="text-xl font-bold opacity-50">Data Dashboard</h1>
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#FF6B6B] bg-white rounded-md">
+                    <h1 class="text-xl font-bold opacity-50">Dashboard</h1>
                     <i class="fas fa-house-chimney text-3xl text-center opacity-25"></i>
                 </div>
             </a>
             <a href="{{ route('hasilakhir.index') }}" class="sidebar-item {{ request()->routeIs('hasilakhir.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-red-400 bg-white rounded-md">
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#00C9A7] bg-white rounded-md">
                     <h1 class="text-xl font-bold opacity-50">Data Hasil Akhir</h1>
                     <i class="fas fa-chart-line text-3xl text-center opacity-25"></i>
                 </div>
             </a>
             <a href="{{ route('profile.index') }}" class="sidebar-item {{ request()->routeIs('profile.index') ? 'active' : '' }}">
-                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-blue-400 bg-white rounded-md">
-                    <h1 class="text-xl font-bold opacity-50">Profile</h1>
+                <div class="flex justify-between items-center shadow-xl w-96 px-6 py-8 border-l-4 border-[#F9C74F] bg-white rounded-md">
+                    <h1 class="text-xl font-bold opacity-50">Data Profile</h1>
                     <i class="fas fa-user text-3xl text-center opacity-25"></i>
                 </div>
             </a>

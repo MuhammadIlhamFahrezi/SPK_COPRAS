@@ -10,6 +10,10 @@ use App\Http\Controllers\PerhitunganController;
 use App\Http\Controllers\HasilAkhirController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +33,27 @@ Route::middleware('guest')->group(function () {
         return redirect()->route('login');
     });
 
+    // Authentication routes
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+    // Registration routes
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+
+    // Email verification routes
+    Route::get('/verify-sent', [RegisterController::class, 'showVerificationSent'])->name('verify.sent');
+    Route::get('/verify-account/{token}', [VerificationController::class, 'verifyAccount'])->name('verify.account');
+
+    // Resend verification routes
+    Route::get('/resend-verification', [VerificationController::class, 'showResendForm'])->name('verification.resend');
+    Route::post('/resend-verification', [VerificationController::class, 'resendVerification'])->name('verification.resend.post');
+
+    // Password reset routes
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
 // Authenticated routes

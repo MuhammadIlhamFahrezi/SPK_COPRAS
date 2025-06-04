@@ -29,42 +29,72 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/'],
+            'login' => ['required', 'string'], // Can be email or username
             'password' => ['required', 'string', 'min:8'],
         ], [
-            'email.regex' => 'Email harus menggunakan @gmail.com',
+            'login.required' => 'Email atau username harus diisi',
             'password.min' => 'Password minimal harus 8 karakter',
         ]);
 
-        // Cek apakah email ada di database
-        $user = User::where('email', $credentials['email'])->first();
+        $loginField = $credentials['login'];
+        $password = $credentials['password'];
+
+        // Determine if login field is email or username
+        $user = null;
+        if (filter_var($loginField, FILTER_VALIDATE_EMAIL)) {
+            // It's an email - validate gmail format
+            if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $loginField)) {
+                throw ValidationException::withMessages([
+                    'login' => 'Email harus menggunakan @gmail.com',
+                ]);
+            }
+            $user = User::where('email', $loginField)->first();
+        } else {
+            // It's a username
+            $user = User::where('username', $loginField)->first();
+        }
 
         $errors = [];
 
-        // Jika user tidak ditemukan, email salah
+        // Check if user exists
         if (!$user) {
-            $errors['email'] = 'Email salah';
+            $errors['login'] = 'Email atau username tidak ditemukan';
         } else {
-            // Jika user ditemukan, cek password
-            if (!Hash::check($credentials['password'], $user->password)) {
-                $errors['password'] = 'Password salah';
+            // Check if account is active
+            if (!$user->isActive()) {
+                $errors['login'] = 'Akun Anda belum diaktivasi. Silakan hubungi administrator.';
+            } else {
+                // Check password
+                if (!Hash::check($password, $user->password)) {
+                    $errors['password'] = 'Password salah';
+                }
             }
         }
 
-        // Jika ada error, kembalikan dengan pesan error
+        // If there are errors, return with validation messages
         if (!empty($errors)) {
             throw ValidationException::withMessages($errors);
         }
 
-        // Jika semua benar, login user
-        if (Auth::attempt($credentials)) {
+        // Attempt login with the correct field
+        $loginCredentials = [
+            'password' => $password
+        ];
+
+        if (filter_var($loginField, FILTER_VALIDATE_EMAIL)) {
+            $loginCredentials['email'] = $loginField;
+        } else {
+            $loginCredentials['username'] = $loginField;
+        }
+
+        if (Auth::attempt($loginCredentials)) {
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
 
-        // Fallback jika terjadi error tidak terduga
+        // Fallback error
         throw ValidationException::withMessages([
-            'email' => 'Login gagal, silakan coba lagi',
+            'login' => 'Login gagal, silakan coba lagi',
         ]);
     }
 

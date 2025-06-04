@@ -30,6 +30,17 @@
             </div>
             @endif
 
+            @if(session('error'))
+            <div id="errorAlert" class="flex justify-between items-center bg-red-200 py-4 px-6 rounded-md">
+                <p class="font-semibold opacity-50">
+                    {{ session('error') }}
+                </p>
+                <button onclick="document.getElementById('errorAlert').style.display='none'" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            @endif
+
             <div class="w-full h-full shadow-xl">
                 <div class="flex items-center space-x-2 px-6 py-4 bg-[#F8F8F8] text-[#FFAE00] border-b-2 border-black-100 ">
                     <i class="text-base fa-solid fa-table"></i>
@@ -46,6 +57,10 @@
                                 @endforeach
                             </select>
                             <h1>entries</h1>
+                            <!-- Hidden search input to maintain search when changing entries -->
+                            @if(request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            @endif
                         </form>
 
                         <form action="{{ route('user.index') }}" method="GET" class="flex items-center space-x-2 font-semibold opacity-50">
@@ -55,8 +70,13 @@
                                 type="text"
                                 name="search"
                                 value="{{ request('search') }}"
+                                placeholder="Nama, Email, Username, Role, Status"
                                 class="border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded">
+                            <!-- Hidden entries input to maintain entries when searching -->
+                            @if(request('entries'))
+                            <input type="hidden" name="entries" value="{{ request('entries') }}">
+                            @endif
+                            <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600">
                                 <i class="fas fa-search"></i>
                             </button>
                         </form>
@@ -67,8 +87,10 @@
                                 <tr class="bg-[#FFAE00] text-white text-base font-bold">
                                     <th class="px-4 py-2 border">No</th>
                                     <th class="px-4 py-2 border">Nama Lengkap</th>
+                                    <th class="px-4 py-2 border">Username</th>
                                     <th class="px-4 py-2 border">E-Mail</th>
                                     <th class="px-4 py-2 border">Role</th>
+                                    <th class="px-4 py-2 border">Status</th>
                                     <th class="px-4 py-2 border">Aksi</th>
                                 </tr>
                             </thead>
@@ -77,26 +99,38 @@
                                 <tr class="font-semibold">
                                     <td class="px-4 py-2 border opacity-50">{{ $index + $users->firstItem() }}</td>
                                     <td class="px-4 py-2 border opacity-50">{{ $user->nama_lengkap }}</td>
+                                    <td class="px-4 py-2 border opacity-50">{{ $user->username }}</td>
                                     <td class="px-4 py-2 border opacity-50">{{ $user->email }}</td>
-                                    <td class="px-4 py-2 border opacity-50">{{ ucfirst($user->role) }}</td>
+                                    <td class="px-4 py-2 border opacity-50">
+                                        <span class="px-2 py-1 rounded text-xs {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800' }}">
+                                            {{ ucfirst($user->role) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-2 border opacity-50">
+                                        <span class="px-2 py-1 rounded text-xs {{ $user->status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $user->status }}
+                                        </span>
+                                    </td>
                                     <td class="px-4 py-2 border">
                                         <!-- VIEW DATA  -->
-                                        <a href="{{ route('user.show', $user->id_user) }}">
-                                            <button class="bg-blue-700 w-8 h-8 rounded-sm">
+                                        <a href="{{ route('user.show', $user->id) }}" class="inline-block">
+                                            <button class="bg-blue-700 w-8 h-8 rounded-sm hover:bg-blue-800" title="Lihat Detail">
                                                 <i class="fas fa-eye text-base text-center text-white"></i>
                                             </button>
                                         </a>
                                         <!-- EDIT DATA -->
-                                        <a href="{{ route('user.edit', $user->id_user) }}">
-                                            <button class="bg-[#FFAE00] w-8 h-8 rounded-sm">
+                                        <a href="{{ route('user.edit', $user->id) }}" class="inline-block">
+                                            <button class="bg-[#FFAE00] w-8 h-8 rounded-sm hover:bg-yellow-500" title="Edit Data">
                                                 <i class="fas fa-pen-to-square text-base text-center text-white"></i>
                                             </button>
                                         </a>
                                         <!-- HAPUS DATA -->
-                                        <button class="bg-red-500 w-8 h-8 rounded-sm" onclick="confirmDelete('{{ $user->id_user }}', '{{ $user->nama_lengkap }}')">
+                                        <button class="bg-red-500 w-8 h-8 rounded-sm hover:bg-red-600"
+                                            onclick="confirmDelete('{{ $user->id }}', '{{ $user->nama_lengkap }}')"
+                                            title="Hapus Data">
                                             <i class="fas fa-trash text-base text-center text-white"></i>
                                         </button>
-                                        <form id="delete-form-{{ $user->id_user }}" action="{{ route('user.destroy', $user->id_user) }}" method="POST" style="display: none;">
+                                        <form id="delete-form-{{ $user->id }}" action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
                                         </form>
@@ -104,7 +138,13 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="px-4 py-2 border text-center">Tidak ada data user</td>
+                                    <td colspan="7" class="px-4 py-2 border text-center text-gray-500 italic">
+                                        @if(request('search'))
+                                        Tidak ada data user yang cocok dengan pencarian "{{ request('search') }}"
+                                        @else
+                                        Tidak ada data user
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -113,6 +153,9 @@
                     <div class="flex items-center justify-between font-semibold ">
                         <h1 class="opacity-50">
                             Showing {{ $users->firstItem() ?? 0 }} to {{ $users->lastItem() ?? 0 }} of {{ $users->total() }} entries
+                            @if(request('search'))
+                            (filtered from total entries)
+                            @endif
                         </h1>
                         <!-- PAGINATION -->
                         <div class="flex">
@@ -131,9 +174,10 @@
         <h2 class="font-semibold opacity-50 text-xl">Konfirmasi Penghapusan</h2>
         <div class="border-t border-b py-6">
             <p class="text-gray-600">Apakah Anda yakin ingin menghapus user <span id="deleteItemName" class="font-bold"></span>?</p>
+            <p class="text-red-500 text-sm mt-2">Tindakan ini tidak dapat dibatalkan.</p>
         </div>
         <div class="flex justify-end space-x-4">
-            <button type="button" onclick="closeDeleteModal()" class="flex justify-center items-center py-2 w-24 rounded-sm border border-[#FFAE00]">
+            <button type="button" onclick="closeDeleteModal()" class="flex justify-center items-center py-2 w-24 rounded-sm border border-[#FFAE00] hover:bg-yellow-50">
                 <span class="text-[#FFAE00] font-semibold">
                     <h1>Cancel</h1>
                 </span>
@@ -168,11 +212,29 @@
         closeDeleteModal();
     }
 
+    // Close modal when clicking outside
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDeleteModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
+
     // Close notification after 5 seconds
     setTimeout(function() {
         const notification = document.getElementById('notificationAlert');
         if (notification) {
             notification.style.display = 'none';
+        }
+        const errorAlert = document.getElementById('errorAlert');
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
         }
     }, 5000);
 </script>

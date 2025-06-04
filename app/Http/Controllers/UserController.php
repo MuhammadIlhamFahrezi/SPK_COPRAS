@@ -21,9 +21,10 @@ class UserController extends Controller
             $query->where('nama_lengkap', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
                 ->orWhere('username', 'like', "%{$search}%")
-                ->orWhere('role', 'like', "%{$search}%");
+                ->orWhere('role', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%");
         })
-            ->orderBy('id_user')
+            ->orderBy('id')
             ->paginate($perPage);
 
         return view('user.index', compact('users'));
@@ -43,21 +44,42 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_lengkap' => 'required|max:100',
-            'username' => 'required|unique:users,username|max:50',
+            'nama_lengkap' => 'required|string|max:100',
+            'username' => 'required|string|unique:users,username|max:50',
             'email' => 'required|email|unique:users,email|max:100',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|string|min:6|confirmed',
             'role' => 'required|in:admin,user',
+            'status' => 'nullable|in:Active,Inactive',
+        ], [
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter.',
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan.',
+            'username.max' => 'Username maksimal 50 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'email.max' => 'Email maksimal 100 karakter.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'role.required' => 'Role wajib dipilih.',
+            'role.in' => 'Role harus admin atau user.',
+            'status.in' => 'Status harus Active atau Inactive.',
         ]);
 
         // Hash the password before storing
         $validated['password'] = Hash::make($validated['password']);
 
-        // No need to generate ID, it will be auto-incremented
+        // Set default status if not provided
+        if (!isset($validated['status'])) {
+            $validated['status'] = 'Inactive';
+        }
+
         User::create($validated);
 
         return redirect()->route('user.index')
-            ->with('success', 'Data Berhasil Disimpan');
+            ->with('success', 'Data user berhasil ditambahkan.');
     }
 
     /**
@@ -86,18 +108,36 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $rules = [
-            'nama_lengkap' => 'required|max:100',
-            'username' => ['required', 'max:50', Rule::unique('users')->ignore($user->id_user, 'id_user')],
-            'email' => ['required', 'email', 'max:100', Rule::unique('users')->ignore($user->id_user, 'id_user')],
+            'nama_lengkap' => 'required|string|max:100',
+            'username' => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'email', 'max:100', Rule::unique('users')->ignore($user->id)],
             'role' => 'required|in:admin,user',
+            'status' => 'nullable|in:Active,Inactive',
         ];
 
         // Only validate password if it's provided
         if ($request->filled('password')) {
-            $rules['password'] = 'min:6|confirmed';
+            $rules['password'] = 'string|min:6|confirmed';
         }
 
-        $validated = $request->validate($rules);
+        $messages = [
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter.',
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan.',
+            'username.max' => 'Username maksimal 50 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'email.max' => 'Email maksimal 100 karakter.',
+            'password.min' => 'Password minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'role.required' => 'Role wajib dipilih.',
+            'role.in' => 'Role harus admin atau user.',
+            'status.in' => 'Status harus Active atau Inactive.',
+        ];
+
+        $validated = $request->validate($rules, $messages);
 
         // Only update password if it's provided
         if ($request->filled('password')) {
@@ -110,7 +150,7 @@ class UserController extends Controller
         $user->update($validated);
 
         return redirect()->route('user.index')
-            ->with('success', 'Data Berhasil DiUpdate');
+            ->with('success', 'Data user berhasil diperbarui.');
     }
 
     /**
@@ -119,9 +159,16 @@ class UserController extends Controller
     public function destroy(int $id)
     {
         $user = User::findOrFail($id);
+
+        // Prevent deletion of current authenticated user (optional)
+        // if (auth()->id() === $user->id) {
+        //     return redirect()->route('user.index')
+        //         ->with('error', 'Tidak dapat menghapus akun yang sedang login.');
+        // }
+
         $user->delete();
 
         return redirect()->route('user.index')
-            ->with('success', 'Data Berhasil Dihapus');
+            ->with('success', 'Data user berhasil dihapus.');
     }
 }

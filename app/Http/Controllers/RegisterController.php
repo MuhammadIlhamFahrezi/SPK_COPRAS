@@ -30,6 +30,21 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:50', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            // Custom error messages
+            'username.unique' => 'Username sudah digunakan',
+            'email.unique' => 'Email sudah digunakan',
+            'password.confirmed' => 'Password dan Confirm Password harus sama',
+
+            // Other validation messages
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi',
+            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter',
+            'username.required' => 'Username wajib diisi',
+            'username.max' => 'Username maksimal 50 karakter',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.max' => 'Email maksimal 100 karakter',
+            'password.required' => 'Password wajib diisi',
         ]);
 
         // Generate verification token

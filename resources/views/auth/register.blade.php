@@ -40,117 +40,123 @@
                     </div>
                 </div>
 
-                <!-- Display Error Messages -->
-                @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                        <li><span class="block sm:inline">{{ $error }}</span></li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
                 <form action="{{ route('register') }}" method="POST" class="py-4">
                     @csrf
                     <div class="space-y-6">
                         <!-- Full Name -->
-                        <div class="w-full relative">
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-user text-2xl"></i>
+                        <div class="w-full">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-user text-2xl"></i>
+                                </div>
+                                <input type="text" name="nama_lengkap" placeholder="Full Name" required
+                                    class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
+                                   text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                                   shadow-bottom @error('nama_lengkap') border-red-500 @enderror"
+                                    value="{{ old('nama_lengkap') }}" />
                             </div>
-                            <input type="text" name="nama_lengkap" placeholder="Full Name" required
-                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
-                               text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-                               shadow-bottom @error('nama_lengkap') border-red-500 @enderror"
-                                value="{{ old('nama_lengkap') }}" />
                             @error('nama_lengkap')
-                            <p class="text-red-500 text-sm mt-2 ml-4">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
                                 {{ $message }}
-                            </p>
+                            </span>
                             @enderror
                         </div>
 
                         <!-- Username -->
-                        <div class="w-full relative">
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-at text-2xl"></i>
+                        <div class="w-full">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-at text-2xl"></i>
+                                </div>
+                                <input type="text" name="username" placeholder="Username" required
+                                    class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
+                                   text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                                   shadow-bottom @error('username') border-red-500 @enderror"
+                                    value="{{ old('username') }}" />
                             </div>
-                            <input type="text" name="username" placeholder="Username" required
-                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
-                               text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-                               shadow-bottom @error('username') border-red-500 @enderror"
-                                value="{{ old('username') }}" />
                             @error('username')
-                            <p class="text-red-500 text-sm mt-2 ml-4">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
                                 {{ $message }}
-                            </p>
+                            </span>
                             @enderror
                         </div>
 
                         <!-- Email -->
-                        <div class="w-full relative">
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-envelope text-2xl"></i>
+                        <div class="w-full">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-envelope text-2xl"></i>
+                                </div>
+                                <input type="email" name="email" placeholder="Email Address" required
+                                    class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
+                                   text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                                   shadow-bottom @error('email') border-red-500 @enderror"
+                                    value="{{ old('email') }}" />
                             </div>
-                            <input type="email" name="email" placeholder="Email Address" required
-                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
-                               text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-                               shadow-bottom @error('email') border-red-500 @enderror"
-                                value="{{ old('email') }}" />
                             @error('email')
-                            <p class="text-red-500 text-sm mt-2 ml-4">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
                                 {{ $message }}
-                            </p>
+                            </span>
                             @enderror
                         </div>
 
                         <!-- Password -->
-                        <div class="w-full relative">
-                            <!-- Icon -->
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-lock text-2xl"></i>
+                        <div class="w-full">
+                            <div class="relative">
+                                <!-- Icon -->
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-lock text-2xl"></i>
+                                </div>
+
+                                <!-- Input -->
+                                <input id="passwordInput" type="password" name="password" placeholder="Password" required
+                                    class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
+            text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+            shadow-bottom @error('password') border-red-500 @enderror" />
+
+                                <!-- Toggle Password Visibility -->
+                                <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('passwordInput', 'eyePassword')">
+                                    <i id="eyePassword" class="fas fa-eye text-gray-400"></i>
+                                </div>
                             </div>
 
-                            <!-- Input -->
-                            <input id="passwordInput" type="password" name="password" placeholder="Password" required
-                                class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
-        text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-        shadow-bottom @error('password') border-red-500 @enderror" />
-
-                            <!-- Toggle Password Visibility -->
-                            <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('passwordInput', 'eyePassword')">
-                                <i id="eyePassword" class="fas fa-eye text-gray-400"></i>
+                            <!-- Error Message - Moved outside relative container -->
+                            <div class="h-5 mt-1"> <!-- Fixed height container for error message -->
+                                @error('password')
+                                <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
-
-                            <!-- Error Message -->
-                            @error('password')
-                            <p class="text-red-500 text-sm mt-2 ml-4">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
-                                {{ $message }}
-                            </p>
-                            @enderror
                         </div>
 
                         <!-- Confirm Password -->
-                        <div class="w-full relative mt-4">
-                            <!-- Icon -->
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-key text-2xl"></i>
+                        <div class="w-full">
+                            <div class="relative">
+                                <!-- Icon -->
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-key text-2xl"></i>
+                                </div>
+
+                                <!-- Input -->
+                                <input id="confirmPasswordInput" type="password" name="password_confirmation" placeholder="Confirm Password" required
+                                    class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
+            text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+            shadow-bottom @error('password') border-red-500 @enderror" />
+
+                                <!-- Toggle Confirm Visibility -->
+                                <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('confirmPasswordInput', 'eyeConfirm')">
+                                    <i id="eyeConfirm" class="fas fa-eye text-gray-400"></i>
+                                </div>
                             </div>
 
-                            <!-- Input -->
-                            <input id="confirmPasswordInput" type="password" name="password_confirmation" placeholder="Confirm Password" required
-                                class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
-        text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-        shadow-bottom" />
-
-                            <!-- Toggle Confirm Visibility -->
-                            <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('confirmPasswordInput', 'eyeConfirm')">
-                                <i id="eyeConfirm" class="fas fa-eye text-gray-400"></i>
+                            <!-- Error Message - Moved outside relative container with fixed height -->
+                            <div class="h-5 mt-1"> <!-- Fixed height container for error message -->
+                                @error('password')
+                                <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                    {{ $message }}
+                                </span>
+                                @enderror
                             </div>
                         </div>
 

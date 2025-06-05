@@ -55,19 +55,39 @@ class AuthController extends Controller
         }
 
         $errors = [];
+        $userExists = false;
+        $isActive = false;
+        $passwordCorrect = false;
 
         // Check if user exists
         if (!$user) {
             $errors['login'] = 'Email atau username tidak ditemukan';
         } else {
+            $userExists = true;
             // Check if account is active
             if (!$user->isActive()) {
                 $errors['login'] = 'Akun Anda belum diaktivasi. Silakan hubungi administrator.';
             } else {
+                $isActive = true;
                 // Check password
                 if (!Hash::check($password, $user->password)) {
                     $errors['password'] = 'Password salah';
+                } else {
+                    $passwordCorrect = true;
                 }
+            }
+        }
+
+        // Special case: If user doesn't exist AND password check would fail
+        // Show errors on both fields
+        if (!$userExists) {
+            $errors['login'] = 'Email atau username tidak ditemukan';
+            $errors['password'] = 'Password salah';
+        }
+        // If user exists but is inactive, still check password to show both errors if needed
+        else if ($userExists && !$isActive) {
+            if (!Hash::check($password, $user->password)) {
+                $errors['password'] = 'Password salah';
             }
         }
 
@@ -92,9 +112,10 @@ class AuthController extends Controller
             return redirect()->intended('dashboard');
         }
 
-        // Fallback error
+        // Fallback error - show on both fields
         throw ValidationException::withMessages([
             'login' => 'Login gagal, silakan coba lagi',
+            'password' => 'Login gagal, silakan coba lagi',
         ]);
     }
 

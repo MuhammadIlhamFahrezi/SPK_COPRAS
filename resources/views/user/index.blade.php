@@ -53,7 +53,7 @@
                             <h1>Show</h1>
                             <select name="entries" id="entries" onchange="this.form.submit()" class="border border-gray-400 rounded px-2 py-1 text-sm">
                                 @foreach([5, 10, 15, 20] as $value)
-                                <option value="{{ $value }}" {{ request('entries', 10) == $value ? 'selected' : '' }}>{{ $value }}</option>
+                                <option value="{{ $value }}" {{ request('entries', 5) == $value ? 'selected' : '' }}>{{ $value }}</option>
                                 @endforeach
                             </select>
                             <h1>entries</h1>
@@ -70,7 +70,6 @@
                                 type="text"
                                 name="search"
                                 value="{{ request('search') }}"
-                                placeholder="Nama, Email, Username, Role, Status"
                                 class="border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <!-- Hidden entries input to maintain entries when searching -->
                             @if(request('entries'))
@@ -102,35 +101,35 @@
                                     <td class="px-4 py-2 border opacity-50">{{ $user->username }}</td>
                                     <td class="px-4 py-2 border opacity-50">{{ $user->email }}</td>
                                     <td class="px-4 py-2 border opacity-50">
-                                        <span class="px-2 py-1 rounded text-xs {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800' }}">
+                                        <span class="{{ $user->role === 'admin' ? 'text-purple-800' : 'text-green-800' }}">
                                             {{ ucfirst($user->role) }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-2 border opacity-50">
-                                        <span class="px-2 py-1 rounded text-xs {{ $user->status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                        <span class="{{ $user->status === 'Active' ? 'text-green-800' : 'text-red-800' }}">
                                             {{ $user->status }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-2 border">
                                         <!-- VIEW DATA  -->
-                                        <a href="{{ route('user.show', $user->id) }}" class="inline-block">
+                                        <a href="{{ route('user.show', $user->id_user) }}" class="inline-block">
                                             <button class="bg-blue-700 w-8 h-8 rounded-sm hover:bg-blue-800" title="Lihat Detail">
                                                 <i class="fas fa-eye text-base text-center text-white"></i>
                                             </button>
                                         </a>
                                         <!-- EDIT DATA -->
-                                        <a href="{{ route('user.edit', $user->id) }}" class="inline-block">
+                                        <a href="{{ route('user.edit', $user->id_user) }}" class="inline-block">
                                             <button class="bg-[#FFAE00] w-8 h-8 rounded-sm hover:bg-yellow-500" title="Edit Data">
                                                 <i class="fas fa-pen-to-square text-base text-center text-white"></i>
                                             </button>
                                         </a>
                                         <!-- HAPUS DATA -->
                                         <button class="bg-red-500 w-8 h-8 rounded-sm hover:bg-red-600"
-                                            onclick="confirmDelete('{{ $user->id }}', '{{ $user->nama_lengkap }}')"
+                                            onclick="confirmDelete('{{ $user->id_user }}', '{{ $user->nama_lengkap }}')"
                                             title="Hapus Data">
                                             <i class="fas fa-trash text-base text-center text-white"></i>
                                         </button>
-                                        <form id="delete-form-{{ $user->id }}" action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: none;">
+                                        <form id="delete-form-{{ $user->id_user }}" action="{{ route('user.destroy', $user->id_user) }}" method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
                                         </form>
@@ -138,7 +137,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="7" class="px-4 py-2 border text-center text-gray-500 italic">
+                                    <td colspan="7" class="px-4 py-2 border text-center text-gray-500 font-semibold italic">
                                         @if(request('search'))
                                         Tidak ada data user yang cocok dengan pencarian "{{ request('search') }}"
                                         @else

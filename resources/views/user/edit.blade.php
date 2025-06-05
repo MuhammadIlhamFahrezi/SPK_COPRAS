@@ -18,19 +18,7 @@
             </a>
         </div>
         <div class="flex flex-col space-y-4">
-            <!-- Validation Errors -->
-            @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <ul>
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <form action="{{ route('user.update', $user->id) }}" method="POST">
+            <form action="{{ route('user.update', $user->id_user) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="w-full h-full shadow-xl">
@@ -39,15 +27,18 @@
                         <h1 class="text-lg font-semibold opacity-75">Edit Data User</h1>
                     </div>
                     <div class="flex flex-col px-6 py-4 bg-white space-y-8">
-                        <div class="flex items-center justify-between space-x-8">
+                        <div class="flex items-start justify-between space-x-8">
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Nama Lengkap</h1>
                                 <input
                                     type="text"
                                     name="nama_lengkap"
                                     value="{{ old('nama_lengkap', $user->nama_lengkap) }}"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nama_lengkap') border-red-500 @enderror"
                                     required>
+                                @error('nama_lengkap')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Username</h1>
@@ -55,46 +46,80 @@
                                     type="text"
                                     name="username"
                                     value="{{ old('username', $user->username) }}"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('username') border-red-500 @enderror"
                                     required>
+                                @error('username')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="flex items-center justify-between space-x-8">
+                        <div class="flex items-start justify-between space-x-8">
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Email</h1>
                                 <input
                                     type="email"
                                     name="email"
                                     value="{{ old('email', $user->email) }}"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror"
                                     required>
+                                @error('email')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Role</h1>
                                 <select
                                     name="role"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('role') border-red-500 @enderror"
                                     required>
-                                    <option value="" disabled></option>
+                                    <option value="" disabled>Pilih Role</option>
                                     <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User</option>
                                 </select>
+                                @error('role')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="flex items-center justify-between space-x-8">
+                        <div class="flex items-start justify-between space-x-8">
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Password <span class="text-xs text-gray-500">(Biarkan kosong jika tidak ingin mengubah)</span></h1>
                                 <input
                                     type="password"
                                     name="password"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror">
+                                @error('password')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
                                 <h1>Konfirmasi Password</h1>
                                 <input
                                     type="password"
                                     name="password_confirmation"
-                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password_confirmation') border-red-500 @enderror">
+                                @error('password_confirmation')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="flex items-start justify-between space-x-8">
+                            <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
+                                <h1>Status</h1>
+                                <select
+                                    name="status"
+                                    class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('status') border-red-500 @enderror"
+                                    required>
+                                    <option value="" disabled>Pilih Status</option>
+                                    <option value="Active" {{ old('status', $user->status) == 'Active' ? 'selected' : '' }}>Active</option>
+                                    <option value="Inactive" {{ old('status', $user->status) == 'Inactive' ? 'selected' : '' }}>Inactive</option>
+                                </select>
+                                @error('status')
+                                <span class="text-red-500 text-xs italic">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
+                                <!-- Empty div to maintain layout balance -->
                             </div>
                         </div>
                     </div>

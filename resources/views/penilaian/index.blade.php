@@ -25,7 +25,7 @@
         </div>
         @endif
 
-        @if($alternatifs->isEmpty())
+        @if($totalAlternatifs == 0)
         <div class="flex items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm space-x-1" role="alert">
             <p class="font-extrabold opacity-50">Data Alternatif</p>
             <p class="font-semibold opacity-50">masih kosong. Silahkan tambahkan data terlebih dahulu.</p>
@@ -111,7 +111,13 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="px-4 py-2 border text-center">Tidak ada data alternatif</td>
+                                    <td colspan="4" class="px-4 py-2 border text-center text-gray-500 font-semibold italic">
+                                        @if(request('search'))
+                                        Tidak ada data alternatif yang cocok dengan pencarian "{{ request('search') }}"
+                                        @else
+                                        Tidak ada data alternatif
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforelse
                             </tbody>

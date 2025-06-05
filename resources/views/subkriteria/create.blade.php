@@ -33,7 +33,7 @@
                                 value="{{ old('nama_subkriteria') }}"
                                 class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nama_subkriteria') border-red-500 @enderror">
                             @error('nama_subkriteria')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-xs italic">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="flex flex-col font-bold opacity-50 space-y-4 w-full">
@@ -44,7 +44,7 @@
                                 value="{{ old('nilai') }}"
                                 class="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nilai') border-red-500 @enderror">
                             @error('nilai')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-xs italic">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>

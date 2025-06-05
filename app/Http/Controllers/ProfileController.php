@@ -43,6 +43,15 @@ class ProfileController extends Controller
         ];
 
         $messages = [
+            'nama_lengkap.required' => 'Nama lengkap harus diisi',
+            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter',
+            'username.required' => 'Username harus diisi',
+            'username.max' => 'Username maksimal 50 karakter',
+            'username.unique' => 'Username sudah digunakan',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.max' => 'Email maksimal 100 karakter',
+            'email.unique' => 'Email sudah digunakan',
             'email.regex' => 'Email harus menggunakan @gmail.com',
         ];
 
@@ -50,6 +59,7 @@ class ProfileController extends Controller
         if ($request->filled('password')) {
             $rules['password'] = 'min:6|confirmed';
             $messages['password.min'] = 'Password minimal harus 6 karakter';
+            $messages['password.confirmed'] = 'Password dan Confirm Password harus sama';
         }
 
         $validated = $request->validate($rules, $messages);

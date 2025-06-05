@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('entries', 10);
+        $perPage = $request->input('entries', 5);
 
         $users = User::when($search, function ($query) use ($search) {
             $query->where('nama_lengkap', 'like', "%{$search}%")
@@ -24,7 +25,7 @@ class UserController extends Controller
                 ->orWhere('role', 'like', "%{$search}%")
                 ->orWhere('status', 'like', "%{$search}%");
         })
-            ->orderBy('id')
+            ->orderBy('id_user')
             ->paginate($perPage);
 
         return view('user.index', compact('users'));
@@ -44,42 +45,33 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_lengkap' => 'required|string|max:100',
-            'username' => 'required|string|unique:users,username|max:50',
-            'email' => 'required|email|unique:users,email|max:100',
-            'password' => 'required|string|min:6|confirmed',
+            'nama_lengkap' => 'required|max:100',
+            'username' => 'required|unique:users,username|max:50|alpha_dash',
+            'email' => 'required|email|unique:users,email|max:100|regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
+            'password' => 'required|min:6|confirmed',
             'role' => 'required|in:admin,user',
-            'status' => 'nullable|in:Active,Inactive',
+            'status' => 'required|in:Active,Inactive',
         ], [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
-            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter.',
-            'username.required' => 'Username wajib diisi.',
-            'username.unique' => 'Username sudah digunakan.',
-            'username.max' => 'Username maksimal 50 karakter.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah digunakan.',
-            'email.max' => 'Email maksimal 100 karakter.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 6 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'role.required' => 'Role wajib dipilih.',
-            'role.in' => 'Role harus admin atau user.',
-            'status.in' => 'Status harus Active atau Inactive.',
+            'email.regex' => 'Email harus menggunakan @gmail.com',
+            'email.unique' => 'Email sudah digunakan',
+            'username.alpha_dash' => 'Username hanya boleh mengandung huruf, angka, dash, dan underscore',
+            'username.unique' => 'Username sudah digunakan',
+            'password.confirmed' => 'Password dan Confirm Password harus sama',
         ]);
 
         // Hash the password before storing
         $validated['password'] = Hash::make($validated['password']);
 
-        // Set default status if not provided
-        if (!isset($validated['status'])) {
-            $validated['status'] = 'Inactive';
+        // Generate verification token if status is Inactive
+        if ($validated['status'] === 'Inactive') {
+            $validated['verification_token'] = Str::random(60);
+            $validated['verification_expiry'] = now()->addDays(7); // Token expires in 7 days
         }
 
         User::create($validated);
 
         return redirect()->route('user.index')
-            ->with('success', 'Data user berhasil ditambahkan.');
+            ->with('success', 'Data Berhasil Disimpan');
     }
 
     /**
@@ -108,36 +100,25 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $rules = [
-            'nama_lengkap' => 'required|string|max:100',
-            'username' => ['required', 'string', 'max:50', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'email', 'max:100', Rule::unique('users')->ignore($user->id)],
+            'nama_lengkap' => 'required|max:100',
+            'username' => ['required', 'max:50', 'alpha_dash', Rule::unique('users')->ignore($user->id_user, 'id_user')],
+            'email' => ['required', 'email', 'max:100', 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/', Rule::unique('users')->ignore($user->id_user, 'id_user')],
             'role' => 'required|in:admin,user',
-            'status' => 'nullable|in:Active,Inactive',
+            'status' => 'required|in:Active,Inactive',
         ];
 
         // Only validate password if it's provided
         if ($request->filled('password')) {
-            $rules['password'] = 'string|min:6|confirmed';
+            $rules['password'] = 'min:6|confirmed';
         }
 
-        $messages = [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
-            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter.',
-            'username.required' => 'Username wajib diisi.',
-            'username.unique' => 'Username sudah digunakan.',
-            'username.max' => 'Username maksimal 50 karakter.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah digunakan.',
-            'email.max' => 'Email maksimal 100 karakter.',
-            'password.min' => 'Password minimal 6 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'role.required' => 'Role wajib dipilih.',
-            'role.in' => 'Role harus admin atau user.',
-            'status.in' => 'Status harus Active atau Inactive.',
-        ];
-
-        $validated = $request->validate($rules, $messages);
+        $validated = $request->validate($rules, [
+            'email.regex' => 'Email harus menggunakan @gmail.com',
+            'email.unique' => 'Email sudah digunakan',
+            'username.alpha_dash' => 'Username hanya boleh mengandung huruf, angka, dash, dan underscore',
+            'username.unique' => 'Username sudah digunakan',
+            'password.confirmed' => 'Password dan Confirm Password harus sama',
+        ]);
 
         // Only update password if it's provided
         if ($request->filled('password')) {
@@ -147,10 +128,24 @@ class UserController extends Controller
             unset($validated['password']);
         }
 
+        // Handle status change
+        if ($validated['status'] !== $user->status) {
+            if ($validated['status'] === 'Inactive') {
+                // Generate new verification token
+                $validated['verification_token'] = Str::random(60);
+                $validated['verification_expiry'] = now()->addDays(7);
+            } else {
+                // Clear verification token when activating
+                $validated['verification_token'] = null;
+                $validated['verification_expiry'] = null;
+                $validated['email_verified_at'] = now(); // Mark email as verified when activating
+            }
+        }
+
         $user->update($validated);
 
         return redirect()->route('user.index')
-            ->with('success', 'Data user berhasil diperbarui.');
+            ->with('success', 'Data Berhasil DiUpdate');
     }
 
     /**
@@ -159,16 +154,34 @@ class UserController extends Controller
     public function destroy(int $id)
     {
         $user = User::findOrFail($id);
-
-        // Prevent deletion of current authenticated user (optional)
-        // if (auth()->id() === $user->id) {
-        //     return redirect()->route('user.index')
-        //         ->with('error', 'Tidak dapat menghapus akun yang sedang login.');
-        // }
-
         $user->delete();
 
         return redirect()->route('user.index')
-            ->with('success', 'Data user berhasil dihapus.');
+            ->with('success', 'Data Berhasil Dihapus');
+    }
+
+    /**
+     * Activate user account via verification token
+     */
+    public function verifyAccount(Request $request, $token)
+    {
+        $user = User::where('verification_token', $token)->first();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Token verifikasi tidak valid.');
+        }
+
+        if (!$user->isVerificationTokenValid()) {
+            return redirect()->route('login')->with('error', 'Token verifikasi sudah expired.');
+        }
+
+        $user->update([
+            'status' => 'Active',
+            'email_verified_at' => now(),
+            'verification_token' => null,
+            'verification_expiry' => null,
+        ]);
+
+        return redirect()->route('login')->with('success', 'Akun berhasil diaktivasi. Silakan login.');
     }
 }

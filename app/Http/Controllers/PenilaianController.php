@@ -18,6 +18,9 @@ class PenilaianController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('entries', 5); // Default to 5 entries per page
 
+        // Check if there are any alternatifs at all
+        $totalAlternatifs = Alternatif::count();
+
         $alternatifs = Alternatif::when($search, function ($query) use ($search) {
             $query->where('kode_alternatif', 'like', "%{$search}%")
                 ->orWhere('nama_alternatif', 'like', "%{$search}%");
@@ -34,7 +37,7 @@ class PenilaianController extends Controller
             $alternatif->has_nilai = $nilaiCount > 0;
         }
 
-        return view('penilaian.index', compact('alternatifs'));
+        return view('penilaian.index', compact('alternatifs', 'totalAlternatifs'));
     }
 
     /**

@@ -11,7 +11,7 @@
 
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-[#FFAE00] via-[#FFD966] to-[#FFA500]">
+<body class="min-h-screen bg-gradient-to-br from-[#FFAE00] via-[#FFC947] to-[#FF6F00]">
     <!-- Header -->
     <div class="w-full h-20 bg-white px-8 md:px-16 flex flex-row justify-between">
         <div class="text-[#FFAE00] flex items-center space-x-4">
@@ -34,8 +34,10 @@
                     <div class="border-b-4 border-[#FFAE00] flex justify-center items-center px-4 py-4 text-[#FFAE00] text-3xl font-black">
                         <button>Sign In</button>
                     </div>
-                    <div class="border-b-4 border-gray-300 flex justify-center items-center px-4 py-4 text-gray-300 text-3xl font-black opacity-50">
-                        <a href="{{ route('register') }}" class="hover:text-[#FFAE00] transition-colors duration-300">Sign Up</a>
+                    <div class="group flex justify-center items-center px-4 py-4 border-b-4 border-gray-300 transition-colors duration-300 hover:border-[#FFAE00] opacity-50">
+                        <a href="{{ route('register') }}" class="text-gray-300 text-3xl font-black opacity-50 transition-colors duration-300 group-hover:text-[#FFAE00]">
+                            Sign Up
+                        </a>
                     </div>
                 </div>
 
@@ -56,51 +58,55 @@
                 <form action="{{ route('login.post') }}" method="POST" class="py-4">
                     @csrf
                     <div class="space-y-8">
-                        <div class="w-full relative mb-4">
-                            <!-- Ikon -->
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-circle-user text-2xl"></i>
-                            </div>
+                        <!-- Login Field Container -->
+                        <div class="w-full">
+                            <div class="relative">
+                                <!-- Ikon -->
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-circle-user text-2xl"></i>
+                                </div>
 
-                            <!-- Input -->
-                            <input type="text" name="login" placeholder="Email atau Username" required
-                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
-               text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-               shadow-bottom @error('login') border-red-500 @enderror"
-                                value="{{ old('login') }}" />
+                                <!-- Input -->
+                                <input type="text" name="login" placeholder="Email atau Username" required
+                                    class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
+                   text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                   shadow-bottom @error('login') border-red-500 @enderror"
+                                    value="{{ old('login') }}" />
+                            </div>
 
                             <!-- Error Message -->
                             @error('login')
-                            <p class="text-red-500 text-sm mt-2 ml-4">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
                                 {{ $message }}
-                            </p>
+                            </span>
                             @enderror
                         </div>
 
-                        <div class="w-full relative">
-                            <!-- Ikon Kunci -->
-                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
-                                <i class="fas fa-lock text-2xl"></i>
-                            </div>
+                        <!-- Password Field Container -->
+                        <div class="w-full">
+                            <div class="relative">
+                                <!-- Ikon Kunci -->
+                                <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
+                                    <i class="fas fa-lock text-2xl"></i>
+                                </div>
 
-                            <!-- Input -->
-                            <input id="passwordInput" type="password" name="password" placeholder="Password" required
-                                class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
-        text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-        shadow-bottom @error('password') border-red-500 @enderror" />
+                                <!-- Input -->
+                                <input id="passwordInput" type="password" name="password" placeholder="Password" required
+                                    class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
+            text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+            shadow-bottom @error('password') border-red-500 @enderror" />
 
-                            <!-- Tombol Tampilkan/Sembunyikan -->
-                            <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword()">
-                                <i id="eyeIcon" class="fas fa-eye text-gray-400"></i>
+                                <!-- Tombol Tampilkan/Sembunyikan -->
+                                <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword()">
+                                    <i id="eyeIcon" class="fas fa-eye text-gray-400"></i>
+                                </div>
                             </div>
 
                             <!-- Error Message -->
                             @error('password')
-                            <p class="text-red-500 text-sm mt-2 ml-4">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
                                 {{ $message }}
-                            </p>
+                            </span>
                             @enderror
                         </div>
 
@@ -158,7 +164,7 @@
                             }
                         </style>
 
-                        <div class="flex justify-between space-x-8">
+                        <div class="flex justify-between items-center space-x-8">
                             <a href="{{ route('password.request') }}" class="w-1/2 text-left text-[#FFAE00] hover:text-[#e69d00] transition-colors duration-300">
                                 Forgot your Password?
                             </a>
@@ -179,22 +185,23 @@
                 <!-- Background decorative elements -->
                 <div class="absolute inset-0 overflow-hidden pointer-events-none">
                     <!-- Floating geometric shapes -->
-                    <div class="absolute top-10 right-10 w-20 h-20 bg-[#FFAE00]/20 rounded-full floating"></div>
-                    <div class="absolute top-40 left-10 w-16 h-16 bg-white/10 rounded-lg rotate-45 floating"></div>
-                    <div class="absolute bottom-32 right-20 w-12 h-12 bg-purple-300/20 rounded-full floating"></div>
-                    <div class="absolute bottom-10 left-32 w-8 h-8 bg-blue-300/30 rounded-full floating"></div>
+                    <div class="absolute top-10 right-10 w-20 h-20 bg-red-500/30 rounded-full floating"></div>
+                    <div class="absolute top-40 left-10 w-16 h-16 bg-pink-400/20 rounded-lg rotate-45 floating"></div>
+                    <div class="absolute bottom-32 right-20 w-12 h-12 bg-green-400/30 rounded-full floating"></div>
+                    <div class="absolute bottom-10 left-32 w-8 h-8 bg-yellow-300/40 rounded-full floating"></div>
 
                     <!-- Database icons scattered -->
-                    <div class="absolute top-20 left-1/3 text-white/10 floating">
+                    <div class="absolute top-20 left-1/3 text-red-600/30 floating">
                         <i class="fas fa-database text-4xl"></i>
                     </div>
-                    <div class="absolute bottom-20 right-1/3 text-[#FFAE00]/20 floating">
+                    <div class="absolute bottom-20 right-1/3 text-pink-500/30 floating">
                         <i class="fas fa-chart-line text-3xl"></i>
                     </div>
-                    <div class="absolute top-1/2 right-10 text-white/10 floating">
+                    <div class="absolute top-1/2 right-10 text-green-600/30 floating">
                         <i class="fas fa-cogs text-2xl"></i>
                     </div>
                 </div>
+
 
                 <!-- Content -->
                 <div class="w-full relative z-10">

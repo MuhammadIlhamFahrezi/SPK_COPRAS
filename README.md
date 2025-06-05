@@ -167,9 +167,18 @@ CREATE TABLE nilai_alternatif (
 CREATE TABLE user (
     id_user INT AUTO_INCREMENT PRIMARY KEY,
     nama_lengkap VARCHAR(100) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') DEFAULT 'user',
+
+    status ENUM('Active', 'Inactive') DEFAULT 'Inactive', -- status akun: aktif atau belum aktif
+    verification_token VARCHAR(255), -- token verifikasi email
+    verification_expiry DATETIME, -- batas waktu token aktivasi
+
+    reset_pass_token VARCHAR(255), -- token untuk reset password
+    reset_pass_token_expiry DATETIME, -- batas waktu token reset
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```

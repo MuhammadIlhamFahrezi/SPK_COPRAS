@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Guest routes - with sanitization for form submissions
-Route::middleware(['guest', 'sanitize'])->group(function () {
+// Guest routes
+Route::middleware('guest')->group(function () {
     Route::get('/', function () {
         return redirect()->route('login');
     });
@@ -51,8 +51,8 @@ Route::middleware(['guest', 'sanitize'])->group(function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update')->middleware('throttle:5,1');
 });
 
-// Authenticated routes - with sanitization for all form submissions
-Route::middleware(['auth.user', 'sanitize'])->group(function () {
+// Authenticated routes
+Route::middleware('auth.user')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

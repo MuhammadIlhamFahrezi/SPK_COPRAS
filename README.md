@@ -61,7 +61,8 @@ app/
 │   │
 │   ├── Middleware/
 │   │   ├── IsAdmin.php
-│   │   └── IsUser.php
+│   │   ├── IsUser.php
+│   │   └── SanitizeInput.php
 │   │
 database/
 ├── migrations/
@@ -119,6 +120,10 @@ resources/
 │       ├── index.blade.php
 │       ├── create.blade.php
 │       └── edit.blade.php
+│
+tests/
+├── Feature/
+│   └── SanitizeInputTest.php
 │
 routes/
 └── web.php
@@ -207,6 +212,15 @@ CREATE TABLE user (
     DB_DATABASE=Copras_V1
     DB_USERNAME=root
     DB_PASSWORD=
+
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.gmail.com
+    MAIL_PORT=587
+    MAIL_USERNAME=yuruminayumi@gmail.com
+    MAIL_PASSWORD=xqnzetaaKzecblyy
+    MAIL_ENCRYPTION=tls
+    MAIL_FROM_ADDRESS=copras.app@gmail.com
+    MAIL_FROM_NAME="Copras"
     ```
 
 7. Generate the application key:
@@ -247,6 +261,10 @@ CREATE TABLE user (
 13. Access the application by visiting:
     ```
     http://127.0.0.1:8000
+    ```
+14. Test Santizie XSS, SQL:
+    ```
+    php artisan test --filter SanitizeInputTest
     ```
 
 ## User Login Information

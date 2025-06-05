@@ -225,8 +225,8 @@ CREATE TABLE user (
     MAIL_MAILER=smtp
     MAIL_HOST=smtp.gmail.com
     MAIL_PORT=587
-    MAIL_USERNAME=yuruminayumi@gmail.com
-    MAIL_PASSWORD=xqnzetaaKzecblyy
+    MAIL_USERNAME=isi
+    MAIL_PASSWORD=isi
     MAIL_ENCRYPTION=tls
     MAIL_FROM_ADDRESS=copras.app@gmail.com
     MAIL_FROM_NAME="Copras"

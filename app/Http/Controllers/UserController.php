@@ -145,7 +145,7 @@ class UserController extends Controller
         $user->update($validated);
 
         return redirect()->route('user.index')
-            ->with('success', 'Data Berhasil DiUpdate');
+            ->with('success', 'Data Berhasil Diupdate');
     }
 
     /**

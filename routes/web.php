@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Guest routes - with sanitization for form submissions
-Route::middleware(['guest', 'sanitize'])->group(function () {
+Route::middleware(['guest', 'sanitize', 'csp'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('login');
     });
@@ -52,7 +52,7 @@ Route::middleware(['guest', 'sanitize'])->group(function () {
 });
 
 // Authenticated routes - with sanitization for all form submissions
-Route::middleware(['auth.user', 'sanitize'])->group(function () {
+Route::middleware(['auth.user', 'sanitize', 'csp'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

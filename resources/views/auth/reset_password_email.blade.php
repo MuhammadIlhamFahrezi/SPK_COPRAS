@@ -83,7 +83,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">Your App Name</div>
+            <div class="logo">SPK COPRAS</div>
             <h2>Password Reset Request</h2>
         </div>
 

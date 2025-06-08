@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Your Email - SPK COPRAS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quantico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/montserrat.css') }}">
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-[#28a745] via-[#34ce57] to-[#20c997]">

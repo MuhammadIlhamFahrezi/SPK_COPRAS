@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - SPK COPRAS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quantico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/montserrat.css') }}">
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-[#FFAE00] via-[#FFC947] to-[#FF6F00]">
@@ -42,7 +43,7 @@
 
                 <form action="{{ route('register') }}" method="POST" class="py-4">
                     @csrf
-                    <div class="space-y-6">
+                    <div class="space-y-2">
                         <!-- Full Name -->
                         <div class="w-full">
                             <div class="relative">
@@ -55,11 +56,14 @@
                                    shadow-bottom @error('nama_lengkap') border-red-500 @enderror"
                                     value="{{ old('nama_lengkap') }}" />
                             </div>
-                            @error('nama_lengkap')
-                            <span class="font-bold text-red-500 text-xs italic opacity-50">
-                                {{ $message }}
-                            </span>
-                            @enderror
+                            <!-- Error Message Container -->
+                            <div class="h-5 mt-1">
+                                @error('nama_lengkap')
+                                <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Username -->
@@ -74,11 +78,14 @@
                                    shadow-bottom @error('username') border-red-500 @enderror"
                                     value="{{ old('username') }}" />
                             </div>
-                            @error('username')
-                            <span class="font-bold text-red-500 text-xs italic opacity-50">
-                                {{ $message }}
-                            </span>
-                            @enderror
+                            <!-- Error Message Container -->
+                            <div class="h-5 mt-1">
+                                @error('username')
+                                <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Email -->
@@ -93,11 +100,14 @@
                                    shadow-bottom @error('email') border-red-500 @enderror"
                                     value="{{ old('email') }}" />
                             </div>
-                            @error('email')
-                            <span class="font-bold text-red-500 text-xs italic opacity-50">
-                                {{ $message }}
-                            </span>
-                            @enderror
+                            <!-- Error Message Container -->
+                            <div class="h-5 mt-1">
+                                @error('email')
+                                <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Password -->
@@ -120,8 +130,8 @@
                                 </div>
                             </div>
 
-                            <!-- Error Message - Moved outside relative container -->
-                            <div class="h-5 mt-1"> <!-- Fixed height container for error message -->
+                            <!-- Error Message Container -->
+                            <div class="h-5 mt-1">
                                 @error('password')
                                 <span class="font-bold text-red-500 text-xs italic opacity-50">
                                     {{ $message }}
@@ -142,7 +152,7 @@
                                 <input id="confirmPasswordInput" type="password" name="password_confirmation" placeholder="Confirm Password" required
                                     class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
             text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
-            shadow-bottom @error('password') border-red-500 @enderror" />
+            shadow-bottom @error('password_confirmation') border-red-500 @enderror" />
 
                                 <!-- Toggle Confirm Visibility -->
                                 <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('confirmPasswordInput', 'eyeConfirm')">
@@ -150,9 +160,9 @@
                                 </div>
                             </div>
 
-                            <!-- Error Message - Moved outside relative container with fixed height -->
-                            <div class="h-5 mt-1"> <!-- Fixed height container for error message -->
-                                @error('password')
+                            <!-- Error Message Container -->
+                            <div class="h-5 mt-1">
+                                @error('password_confirmation')
                                 <span class="font-bold text-red-500 text-xs italic opacity-50">
                                     {{ $message }}
                                 </span>

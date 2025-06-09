@@ -19,13 +19,13 @@
             </a>
         </div>
 
-        <!-- Notification Alert -->
+        <!-- Notifikasi -->
         @if(session('success'))
-        <div id="notificationAlert" class="flex justify-between items-center bg-green-200 py-4 px-6 rounded-md transition-all duration-300">
-            <p class="font-semibold opacity-75 text-green-800">
-                <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
+        <div id="notificationAlert" class="flex justify-between items-center border-l-4 border-green-500 bg-green-200 py-4 px-6 rounded-sm">
+            <p class="font-semibold opacity-50">
+                {{ session('success') }}
             </p>
-            <button onclick="document.getElementById('notificationAlert').style.display='none'" class="text-green-700 hover:text-green-900">
+            <button onclick="document.getElementById('notificationAlert').style.display='none'" class="text-gray-500 hover:text-gray-700">
                 <i class="fas fa-times"></i>
             </button>
         </div>

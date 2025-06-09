@@ -34,7 +34,7 @@
                     <div class="border-b-4 border-[#FFAE00] flex justify-center items-center px-4 py-4 text-[#FFAE00] text-3xl font-black">
                         <button>Sign In</button>
                     </div>
-                    <div class="group flex justify-center items-center px-4 py-4 border-b-4 border-gray-300 transition-colors duration-300 hover:border-[#FFAE00] opacity-50">
+                    <div class="group flex justify-center items-center px-4 py-4 border-b-4 border-gray-300 transition-colors duration-300 hover:border-[#FFAE00] opacity-80">
                         <a href="{{ route('register') }}" class="text-gray-300 text-3xl font-black opacity-50 transition-colors duration-300 group-hover:text-[#FFAE00]">
                             Sign Up
                         </a>
@@ -77,7 +77,7 @@
                             <!-- Error Message -->
                             @error('login')
                             <span class="font-bold text-red-500 text-xs italic opacity-50">
-                                {{ $message }}
+                                {!! $message !!}
                             </span>
                             @enderror
                         </div>

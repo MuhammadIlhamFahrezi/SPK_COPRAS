@@ -40,33 +40,40 @@ class SubKriteriaSeeder extends Seeder
     private function getSubKriteriaName(string $kriteriaName, int $nilai): string
     {
         $nameSets = [
-            'Tanggungan Orang Tua' => [
-                5 => '>7',
-                4 => '6-7',
-                3 => '4-5',
-                2 => '2-3',
-                1 => '<2',
+            'Peluang Kerja' => [
+                5 => 'Sangat tinggi',
+                4 => 'Tinggi',
+                3 => 'Sedang',
+                2 => 'Rendah',
+                1 => 'Sangat rendah',
             ],
-            'Prestasi' => [
-                5 => 'Nasional',
-                4 => 'Provinsi',
-                3 => 'Kabupaten',
-                2 => 'Kecamatan',
-                1 => 'Lokal',
+            'Minat dan Bakat Pribadi' => [
+                5 => 'Sangat sesuai',
+                4 => 'Sesuai',
+                3 => 'Cukup sesuai',
+                2 => 'Tidak sesuai',
+                1 => 'Sangat tidak sesuai',
             ],
-            'Penghasilan Orang Tua' => [
-                5 => '<12.000.000',
-                4 => '12.000.000 - 18.000.000',
-                3 => '18.000.001 - 24.000.000',
-                2 => '24.000.001 - 36.000.000',
-                1 => '>36.000.000',
+            'Kesesuaian Gaya Belajar' => [
+                5 => 'Sangat sesuai',
+                4 => 'Sesuai',
+                3 => 'Cukup sesuai',
+                2 => 'Tidak sesuai',
+                1 => 'Sangat tidak sesuai',
             ],
-            'IPK' => [
-                5 => '>3,5',
-                4 => '3,1 - 3,5',
-                3 => '2,6 - 3,0',
-                2 => '2,0 - 2,5',
-                1 => '<2,0',
+            'Tingkat Kesulitan Studi' => [
+                5 => 'Sangat tinggi',
+                4 => 'Tinggi',
+                3 => 'Sedang',
+                2 => 'Rendah',
+                1 => 'Sangat rendah',
+            ],
+            'Biaya Pendidikan' => [
+                5 => 'Sangat terjangkau',
+                4 => 'Terjangkau',
+                3 => 'Cukup terjangkau',
+                2 => 'Tidak terjangkau',
+                1 => 'Sangat tidak terjangkau',
             ],
         ];
 

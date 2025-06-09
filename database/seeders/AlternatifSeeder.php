@@ -16,31 +16,43 @@ class AlternatifSeeder extends Seeder
         $alternatifs = [
             [
                 'kode_alternatif' => 'A1',
-                'nama_alternatif' => 'Alternatif A',
+                'nama_alternatif' => 'Sains Murni',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kode_alternatif' => 'A2',
-                'nama_alternatif' => 'Alternatif B',
+                'nama_alternatif' => 'Teknik/Rekayasa',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kode_alternatif' => 'A3',
-                'nama_alternatif' => 'Alternatif C',
+                'nama_alternatif' => 'Kesehatan/Kedokteran',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kode_alternatif' => 'A4',
-                'nama_alternatif' => 'Alternatif D',
+                'nama_alternatif' => 'Bisnis dan Manajemen',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'kode_alternatif' => 'A5',
-                'nama_alternatif' => 'Alternatif E',
+                'nama_alternatif' => 'Ilmu Sosial dan Hukum',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_alternatif' => 'A6',
+                'nama_alternatif' => 'Pendidikan dan Keguruan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_alternatif' => 'A7',
+                'nama_alternatif' => 'Seni, Desain dan Industri Kreatif',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

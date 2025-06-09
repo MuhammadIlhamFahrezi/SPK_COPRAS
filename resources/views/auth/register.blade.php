@@ -31,7 +31,7 @@
             <!-- Left Side - Register Form -->
             <div class="w-full md:w-1/2 bg-white/95 backdrop-blur-sm p-8 md:p-14 flex flex-col space-y-8 rounded-2xl shadow-2xl">
                 <div class="flex justify-center items-center space-x-20">
-                    <div class="group flex justify-center items-center px-4 py-4 border-b-4 border-gray-300 transition-colors duration-300 hover:border-[#FFAE00] opacity-50">
+                    <div class="group flex justify-center items-center px-4 py-4 border-b-4 border-gray-300 transition-colors duration-300 hover:border-[#FFAE00] opacity-80">
                         <a href="{{ route('login') }}" class="text-gray-300 text-3xl font-black opacity-50 transition-colors duration-300 group-hover:text-[#FFAE00]">
                             Sign In
                         </a>

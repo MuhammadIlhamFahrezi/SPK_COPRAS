@@ -67,7 +67,7 @@
                                 </div>
 
                                 <!-- Input -->
-                                <input type="text" name="login" placeholder="Email atau Username" required
+                                <input type="text" name="login" placeholder="Email atau Username"
                                     class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
                    text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
                    shadow-bottom @error('login') border-red-500 @enderror"
@@ -91,7 +91,7 @@
                                 </div>
 
                                 <!-- Input -->
-                                <input id="passwordInput" type="password" name="password" placeholder="Password" required
+                                <input id="passwordInput" type="password" name="password" placeholder="Password"
                                     class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
             text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
             shadow-bottom @error('password') border-red-500 @enderror" />

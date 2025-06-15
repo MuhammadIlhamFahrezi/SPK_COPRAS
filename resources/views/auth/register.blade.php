@@ -50,7 +50,7 @@
                                 <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
                                     <i class="fas fa-user text-2xl"></i>
                                 </div>
-                                <input type="text" name="nama_lengkap" placeholder="Full Name" required
+                                <input type="text" name="nama_lengkap" placeholder="Full Name"
                                     class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
                                    text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
                                    shadow-bottom @error('nama_lengkap') border-red-500 @enderror"
@@ -72,7 +72,7 @@
                                 <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
                                     <i class="fas fa-at text-2xl"></i>
                                 </div>
-                                <input type="text" name="username" placeholder="Username" required
+                                <input type="text" name="username" placeholder="Username"
                                     class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
                                    text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
                                    shadow-bottom @error('username') border-red-500 @enderror"
@@ -94,7 +94,7 @@
                                 <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FFAE00]">
                                     <i class="fas fa-envelope text-2xl"></i>
                                 </div>
-                                <input type="email" name="email" placeholder="Email Address" required
+                                <input type="email" name="email" placeholder="Email Address"
                                     class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
                                    text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
                                    shadow-bottom @error('email') border-red-500 @enderror"
@@ -119,7 +119,7 @@
                                 </div>
 
                                 <!-- Input -->
-                                <input id="passwordInput" type="password" name="password" placeholder="Password" required
+                                <input id="passwordInput" type="password" name="password" placeholder="Password"
                                     class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
             text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
             shadow-bottom @error('password') border-red-500 @enderror" />
@@ -149,7 +149,7 @@
                                 </div>
 
                                 <!-- Input -->
-                                <input id="confirmPasswordInput" type="password" name="password_confirmation" placeholder="Confirm Password" required
+                                <input id="confirmPasswordInput" type="password" name="password_confirmation" placeholder="Confirm Password"
                                     class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
             text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
             shadow-bottom @error('password_confirmation') border-red-500 @enderror" />

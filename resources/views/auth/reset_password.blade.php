@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="{{ asset('css/montserrat.css') }}">
     <link rel="stylesheet" href="/fontawesome/css/all.min.css">
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <style>
+        .shadow-bottom {
+            box-shadow: 0 4px 6px -4px rgba(111, 66, 193, 0.8);
+        }
+
+        .placeholder-bold::placeholder {
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-[#6f42c1] via-[#8b5cf6] to-[#a855f7]">
@@ -59,85 +68,94 @@
                 </div>
                 @endif
 
-                @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6" role="alert">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                        <li class="flex items-center">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            {{ $error }}
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
                 <!-- Form -->
-                <form method="POST" action="{{ route('password.update') }}" class="space-y-6">
+                <form method="POST" action="{{ route('password.update') }}" class="space-y-2">
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
 
                     <!-- Email Input -->
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-4 flex items-center pl-2 pointer-events-none text-[#6f42c1]">
-                            <i class="fas fa-envelope text-xl"></i>
+                    <div class="w-full">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#6f42c1]">
+                                <i class="fas fa-envelope text-2xl"></i>
+                            </div>
+                            <input type="email" name="email" placeholder="Email Address"
+                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none 
+                               text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                               shadow-bottom @error('email') border-red-500 @enderror"
+                                value="{{ old('email') }}" />
                         </div>
-                        <input type="email"
-                            class="w-full pl-16 pr-4 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f42c1]/50 text-gray-700 placeholder:text-gray-400 shadow-lg border border-gray-200 @error('email') border-red-500 @enderror"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            placeholder="Email Address"
-                            required>
-                        @error('email')
-                        <p class="text-red-500 text-sm mt-2 ml-4">
-                            <i class="fas fa-exclamation-circle mr-1"></i>
-                            {{ $message }}
-                        </p>
-                        @enderror
+                        <!-- Error Message Container -->
+                        <div class="h-5 mt-1">
+                            @error('email')
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Password Input -->
-                    <div class="relative mb-4">
-                        <div class="absolute inset-y-0 left-4 flex items-center pl-2 pointer-events-none text-[#6f42c1]">
-                            <i class="fas fa-lock text-xl"></i>
+                    <div class="w-full">
+                        <div class="relative">
+                            <!-- Icon -->
+                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#6f42c1]">
+                                <i class="fas fa-lock text-2xl"></i>
+                            </div>
+
+                            <!-- Input -->
+                            <input id="password" type="password" name="password" placeholder="New Password"
+                                class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
+                text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                shadow-bottom @error('password') border-red-500 @enderror" />
+
+                            <!-- Toggle Password Visibility -->
+                            <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('password', 'eyePassword')">
+                                <i id="eyePassword" class="fas fa-eye text-gray-400"></i>
+                            </div>
                         </div>
-                        <input type="password"
-                            class="w-full pl-16 pr-12 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f42c1]/50 text-gray-700 placeholder:text-gray-400 shadow-lg border border-gray-200 @error('password') border-red-500 @enderror"
-                            id="password"
-                            name="password"
-                            placeholder="New Password"
-                            required>
-                        <!-- Eye icon -->
-                        <div class="absolute inset-y-0 right-4 flex items-center cursor-pointer text-gray-400" onclick="togglePassword('password', 'eye-password')">
-                            <i id="eye-password" class="fas fa-eye"></i>
+
+                        <!-- Error Message Container -->
+                        <div class="h-5 mt-1">
+                            @error('password')
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                {{ $message }}
+                            </span>
+                            @enderror
                         </div>
-                        @error('password')
-                        <p class="text-red-500 text-sm mt-2 ml-4">
-                            <i class="fas fa-exclamation-circle mr-1"></i>
-                            {{ $message }}
-                        </p>
-                        @enderror
                     </div>
 
                     <!-- Confirm Password Input -->
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-4 flex items-center pl-2 pointer-events-none text-[#6f42c1]">
-                            <i class="fas fa-key text-xl"></i>
+                    <div class="w-full">
+                        <div class="relative">
+                            <!-- Icon -->
+                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#6f42c1]">
+                                <i class="fas fa-key text-2xl"></i>
+                            </div>
+
+                            <!-- Input -->
+                            <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm New Password"
+                                class="w-full pl-20 pr-12 py-3 rounded-full focus:outline-none 
+                text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold
+                shadow-bottom" />
+
+                            <!-- Toggle Confirm Visibility -->
+                            <div class="absolute inset-y-0 right-4 flex items-center pr-4 cursor-pointer" onclick="togglePassword('password_confirmation', 'eyeConfirm')">
+                                <i id="eyeConfirm" class="fas fa-eye text-gray-400"></i>
+                            </div>
                         </div>
-                        <input type="password"
-                            class="w-full pl-16 pr-12 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f42c1]/50 text-gray-700 placeholder:text-gray-400 shadow-lg border border-gray-200"
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            placeholder="Confirm New Password"
-                            required>
-                        <!-- Eye icon -->
-                        <div class="absolute inset-y-0 right-4 flex items-center cursor-pointer text-gray-400" onclick="togglePassword('password_confirmation', 'eye-confirm')">
-                            <i id="eye-confirm" class="fas fa-eye"></i>
+
+                        <!-- Error Message Container -->
+                        <div class="h-5 mt-1">
+                            @error('password_confirmation')
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                {{ $message }}
+                            </span>
+                            @enderror
                         </div>
                     </div>
 
-                    <!-- JS for toggling password visibility -->
+                    <!-- Script for toggling password visibility -->
                     <script>
                         function togglePassword(inputId, iconId) {
                             const input = document.getElementById(inputId);
@@ -154,13 +172,14 @@
                         }
                     </script>
 
-
                     <!-- Submit Button -->
-                    <button type="submit"
-                        class="w-full py-4 bg-[#6f42c1] text-white font-bold text-lg rounded-full hover:bg-[#5a2d91] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-3">
-                        <i class="fas fa-key"></i>
-                        <span>Reset Password</span>
-                    </button>
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full py-4 bg-[#6f42c1] text-white font-bold text-lg rounded-full hover:bg-[#5a2d91] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-3">
+                            <i class="fas fa-key"></i>
+                            <span>Reset Password</span>
+                        </button>
+                    </div>
                 </form>
 
                 <!-- Footer Links -->

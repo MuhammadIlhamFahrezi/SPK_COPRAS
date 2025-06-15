@@ -49,6 +49,7 @@ app/
 ├── Http/
 │   ├── Controllers/
 │   │   ├── AuthController.php
+│   │   ├── RegisterController.php
 │   │   ├── DashboardController.php
 │   │   ├── KriteriaController.php
 │   │   ├── SubKriteriaController.php
@@ -57,12 +58,24 @@ app/
 │   │   ├── PerhitunganController.php
 │   │   ├── HasilAkhirController.php
 │   │   ├── UserController.php
-│   │   └── ProfileController.php
+│   │   ├── ProfileController.php
+│   │   ├── ResetPasswordController.php
+│   │   ├── VerificationController.php
+│   │   └── ForgotPasswordController.php
 │   │
 │   ├── Middleware/
 │   │   ├── IsAdmin.php
 │   │   ├── IsUser.php
-│   │   └── SanitizeInput.php
+│   │   ├── AppFirewall.php
+│   │   ├── ContentSecurityPolicy.php
+│   │   ├── SanitizeInput.php
+│   │
+│   ├── Request/
+│   │   ├── LoginRequest.php
+│   │   ├── RegisterRequest.php
+│   │   ├── ForgotPasswordRequest.php
+│   │   ├── ResendVerificationRequest.php
+│   │   └── ResetPasswordRequest.php
 │   │
 database/
 ├── migrations/
@@ -83,7 +96,14 @@ database/
 resources/
 ├── views/
 │   ├── auth/
-│   │   └── login.blade.php
+│   │   ├── login.blade.php
+│   │   ├── register.blade.php
+│   │   ├── forgot_password.blade.php
+│   │   ├── reset_password.blade.php
+│   │   ├── resend_verification.blade.php
+│   │   ├── email_verification.blade.php
+│   │   ├── reset_password_email.blade.php
+│   │   └── verify.blade.php
 │   ├── dashboard/
 │   │   ├── index.blade.php
 │   ├── layouts/
@@ -164,23 +184,32 @@ CREATE TABLE nilai_alternatif (
     FOREIGN KEY (id_kriteria) REFERENCES kriteria(id_kriteria) ON DELETE CASCADE
 );
 
-CREATE TABLE user (
-    id_user INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE users (
+    id_user BIGINT AUTO_INCREMENT PRIMARY KEY,
     nama_lengkap VARCHAR(100) NOT NULL,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    email_verified_at TIMESTAMP NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') DEFAULT 'user',
+    status ENUM('Active', 'Inactive') DEFAULT 'Inactive',
+    
+    verification_token VARCHAR(64), -- sesuai migration
+    verification_expiry TIMESTAMP NULL,
 
-    status ENUM('Active', 'Inactive') DEFAULT 'Inactive', -- status akun: aktif atau belum aktif
-    verification_token VARCHAR(255), -- token verifikasi email
-    verification_expiry DATETIME, -- batas waktu token aktivasi
+    reset_pass_token VARCHAR(64),
+    reset_pass_token_expiry TIMESTAMP NULL,
 
-    reset_pass_token VARCHAR(255), -- token untuk reset password
-    reset_pass_token_expiry DATETIME, -- batas waktu token reset
+    remember_token VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    INDEX idx_email_status (email, status),
+    INDEX idx_username_status (username, status),
+    INDEX idx_verification_token (verification_token),
+    INDEX idx_reset_pass_token (reset_pass_token)
 );
+
 ```
 
 ## Installation Guide

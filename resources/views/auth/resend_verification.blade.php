@@ -68,41 +68,31 @@
                 </div>
                 @endif
 
-                @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6" role="alert">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                        <li class="flex items-center">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            {{ $error }}
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
                 <!-- Form -->
                 <form method="POST" action="{{ route('verification.resend.post') }}" class="space-y-6">
                     @csrf
 
                     <!-- Email Input -->
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-4 flex items-center pl-2 pointer-events-none text-[#17a2b8]">
-                            <i class="fas fa-envelope text-xl"></i>
+                    <div class="w-full">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#17a2b8]">
+                                <i class="fas fa-envelope text-2xl"></i>
+                            </div>
+                            <input type="email"
+                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-[#17a2b8]/50 text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold shadow-bottom @error('email') border-red-500 @enderror"
+                                id="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="Enter your email address">
                         </div>
-                        <input type="email"
-                            class="w-full pl-16 pr-4 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-[#17a2b8]/50 text-gray-700 placeholder:text-gray-400 shadow-lg border border-gray-200 @error('email') border-red-500 @enderror"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            placeholder="Enter your email address"
-                            required>
-                        @error('email')
-                        <p class="text-red-500 text-sm mt-2 ml-4">
-                            <i class="fas fa-exclamation-circle mr-1"></i>
-                            {{ $message }}
-                        </p>
-                        @enderror
+                        <!-- Error Message Container -->
+                        <div class="h-5 mt-1">
+                            @error('email')
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -121,11 +111,17 @@
                         <div class="h-px bg-gray-300 flex-1"></div>
                     </div>
 
-                    <a href="{{ route('login') }}"
-                        class="text-[#17a2b8] hover:text-[#138496] transition-colors duration-300 flex items-center justify-center space-x-2">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back to Login</span>
-                    </a>
+                    <div class="space-y-2">
+                        <a href="{{ route('login') }}"
+                            class="text-[#17a2b8] hover:text-[#138496] transition-colors duration-300 flex items-center justify-center space-x-2">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Back to Login</span>
+                        </a>
+                        <p class="text-gray-500 text-sm">
+                            Don't have an account?
+                            <a href="{{ route('register') }}" class="text-[#17a2b8] hover:text-[#138496] font-semibold">Sign up here</a>
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Tips Section -->
@@ -152,6 +148,16 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .shadow-bottom {
+            box-shadow: 0 4px 6px -4px rgba(23, 162, 184, 0.8);
+        }
+
+        .placeholder-bold::placeholder {
+            font-weight: 600;
+        }
+    </style>
 </body>
 
 </html>

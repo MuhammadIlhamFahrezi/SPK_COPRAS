@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ContentSecurityPolicybbb
+class ContentSecurityPolicy_BlockAll
 {
     /**
      * Handle an incoming request.

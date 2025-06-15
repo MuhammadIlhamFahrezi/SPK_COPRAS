@@ -7,7 +7,8 @@ use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsUser;
 use App\Http\Middleware\SanitizeInput;
 use App\Http\Middleware\AppFirewall;
-use App\Http\Middleware\ContentSecurityPolicy; // Import CSP middleware
+use App\Http\Middleware\ContentSecurityPolicy;
+use App\Http\Middleware\LoginThrottle;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,20 +17,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Global middleware - AppFirewall akan dijalankan di semua request
-        $middleware->append(AppFirewall::class);
+        // Global middleware - dijalankan di semua request
+        // URUTAN PENTING: LoginThrottle harus dijalankan pertama untuk memblokir IP
+        $middleware->append(LoginThrottle::class);  // Blokir IP yang bermasalah
+        $middleware->append(AppFirewall::class);    // Firewall aplikasi
+        $middleware->append(ContentSecurityPolicy::class); // CSP
 
-        // Tambahkan CSP middleware secara global untuk semua web routes
-        // atau bisa dipindahkan ke selective jika diperlukan
-        $middleware->append(ContentSecurityPolicy::class);
-
-        // Middleware aliases
+        // Middleware aliases untuk selective use
         $middleware->alias([
             'admin' => IsAdmin::class,
             'auth.user' => IsUser::class,
             'sanitize' => SanitizeInput::class,
             'firewall' => AppFirewall::class,
-            'csp' => ContentSecurityPolicy::class, // Alias untuk selective use
+            'csp' => ContentSecurityPolicy::class,
+            'login.throttle' => LoginThrottle::class, // Alias jika diperlukan selective use
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

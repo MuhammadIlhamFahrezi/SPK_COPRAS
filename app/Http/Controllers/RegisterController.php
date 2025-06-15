@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\VerifyEmail;
+use App\Http\Requests\RegisterRequest; // Import the Form Request
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rules;
 
 class RegisterController extends Controller
 {
@@ -23,39 +24,20 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request) // Use RegisterRequest instead of Request
     {
-        $request->validate([
-            'nama_lengkap' => ['required', 'string', 'max:100'],
-            'username' => ['required', 'string', 'max:50', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ], [
-            // Custom error messages
-            'username.unique' => 'Username sudah digunakan',
-            'email.unique' => 'Email sudah digunakan',
-            'password.confirmed' => 'Password dan Confirm Password harus sama',
-
-            // Other validation messages
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi',
-            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter',
-            'username.required' => 'Username wajib diisi',
-            'username.max' => 'Username maksimal 50 karakter',
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.max' => 'Email maksimal 100 karakter',
-            'password.required' => 'Password wajib diisi',
-        ]);
+        // Get validated and sanitized data
+        $validatedData = $request->validated();
 
         // Generate verification token
         $verificationToken = Str::random(64);
         $verificationExpiry = now()->addHours(24); // Token expires in 24 hours
 
         $user = User::create([
-            'nama_lengkap' => $request->nama_lengkap,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'nama_lengkap' => $validatedData['nama_lengkap'],
+            'username' => $validatedData['username'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
             'role' => 'user',
             'status' => 'Inactive',
             'verification_token' => $verificationToken,
@@ -67,11 +49,18 @@ class RegisterController extends Controller
             Mail::to($user->email)->send(new VerifyEmail($user, $verificationToken));
 
             return redirect()->route('verify.sent')
-                ->with('message', 'Registration successful! Please check your email to verify your account.');
+                ->with('message', 'Pendaftaran berhasil! Silakan periksa email Anda untuk memverifikasi akun Anda.');
         } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('Failed to send verification email', [
+                'user_id' => $user->id_user,
+                'email' => $user->email,
+                'error' => $e->getMessage()
+            ]);
+
             // If email fails, we can still let user know registration was successful
             return redirect()->route('verify.sent')
-                ->with('warning', 'Registration successful! However, there was an issue sending the verification email. Please try to resend it.');
+                ->with('warning', 'Pendaftaran berhasil! Namun, terjadi masalah saat mengirim email verifikasi. Silakan coba kirim ulang.');
         }
     }
 

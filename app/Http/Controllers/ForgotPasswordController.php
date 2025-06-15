@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\ResetPasswordMail;
+use App\Http\Requests\ForgotPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 class ForgotPasswordController extends Controller
 {
     /**
-     * Show the form to request a password reset link.
+     * Menampilkan formulir untuk meminta tautan reset password.
      */
     public function showLinkRequestForm()
     {
@@ -19,41 +20,42 @@ class ForgotPasswordController extends Controller
     }
 
     /**
-     * Send a reset link to the given user.
+     * Mengirimkan tautan reset password ke pengguna.
      */
-    public function sendResetLinkEmail(Request $request)
+    public function sendResetLinkEmail(ForgotPasswordRequest $request)
     {
-        $request->validate([
-            'email' => ['required', 'string', 'email', 'max:100'],
-        ]);
+        $validatedData = $request->validated();
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $validatedData['email'])->first();
 
         if (!$user) {
-            // For security, we don't reveal if email exists or not
-            return back()->with('success', 'If an account with that email exists, we have sent a password reset link.');
+            // Tampilkan pesan error khusus jika email tidak ditemukan
+            return back()->with('error', 'Akun dengan alamat email ini tidak ada di Sistem Kami.')
+                ->withInput($request->only('email'));
         }
 
         if (!$user->isActive()) {
-            return back()->with('error', 'Your account is not verified yet. Please verify your account first.');
+            return back()->with('error', 'Akun Anda belum diverifikasi. Silakan verifikasi akun terlebih dahulu.')
+                ->withInput($request->only('email'));
         }
 
-        // Generate reset token
+        // Generate token reset password
         $resetToken = Str::random(64);
-        $resetTokenExpiry = now()->addHours(1); // Token expires in 1 hour
+        $resetTokenExpiry = now()->addHours(1); // Token berlaku selama 1 jam
 
         $user->update([
             'reset_pass_token' => $resetToken,
             'reset_pass_token_expiry' => $resetTokenExpiry,
         ]);
 
-        // Send reset email
+        // Kirim email reset password
         try {
             Mail::to($user->email)->send(new ResetPasswordMail($user, $resetToken));
 
-            return back()->with('success', 'If an account with that email exists, we have sent a password reset link.');
+            return back()->with('success', 'Tautan reset password telah dikirim ke alamat email Anda.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to send reset email. Please try again later.');
+            return back()->with('error', 'Gagal mengirim email reset. Silakan coba lagi nanti.')
+                ->withInput($request->only('email'));
         }
     }
 }

@@ -14,7 +14,7 @@ class AppFirewall
      * Daftar IP yang diblokir (blacklist)
      */
     protected array $blacklistedIps = [
-        '192.168.100.9',
+        // '192.168.100.9',
     ];
 
     /**

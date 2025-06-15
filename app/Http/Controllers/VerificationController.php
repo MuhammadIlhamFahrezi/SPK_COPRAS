@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\VerifyEmail;
+use App\Http\Requests\ResendVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -49,20 +50,19 @@ class VerificationController extends Controller
     /**
      * Resend verification email.
      */
-    public function resendVerification(Request $request)
+    public function resendVerification(ResendVerificationRequest $request)
     {
-        $request->validate([
-            'email' => ['required', 'string', 'email', 'max:100'],
-        ]);
+        $validatedData = $request->validated();
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $validatedData['email'])->first();
 
         if (!$user) {
-            return back()->with('error', 'No account found with this email address.');
+            return back()->with('error', 'Akun dengan alamat email ini tidak ada di Sistem Kami.')
+                ->withInput($request->only('email'));
         }
 
         if ($user->isActive()) {
-            return back()->with('info', 'This account is already verified.');
+            return back()->with('info', 'Akun ini sudah terverifikasi.');
         }
 
         // Generate new verification token
@@ -78,9 +78,10 @@ class VerificationController extends Controller
         try {
             Mail::to($user->email)->send(new VerifyEmail($user, $verificationToken));
 
-            return back()->with('success', 'Verification email has been sent! Please check your inbox.');
+            return back()->with('success', 'Email verifikasi telah dikirim! Silakan cek inbox Anda.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to send verification email. Please try again later.');
+            return back()->with('error', 'Gagal mengirim email verifikasi. Silakan coba lagi nanti.')
+                ->withInput($request->only('email'));
         }
     }
 }

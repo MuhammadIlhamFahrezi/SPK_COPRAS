@@ -59,7 +59,7 @@
                 </div>
                 @endif
 
-                @if ($errors->any())
+                <!-- @if ($errors->any())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6" role="alert">
                     <ul class="mb-0">
                         @foreach ($errors->all() as $error)
@@ -70,30 +70,33 @@
                         @endforeach
                     </ul>
                 </div>
-                @endif
+                @endif -->
 
                 <!-- Form -->
                 <form method="POST" action="{{ route('password.email') }}" class="space-y-6">
                     @csrf
 
                     <!-- Email Input -->
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-4 flex items-center pl-2 pointer-events-none text-[#FF6B6B]">
-                            <i class="fas fa-envelope text-xl"></i>
+                    <div class="w-full">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-4 flex items-center pl-4 pointer-events-none text-[#FF6B6B]">
+                                <i class="fas fa-envelope text-2xl"></i>
+                            </div>
+                            <input type="email"
+                                class="w-full pl-20 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]/50 text-gray-400 text-base placeholder:text-gray-400 placeholder:text-base placeholder-bold shadow-bottom @error('email') border-red-500 @enderror"
+                                id="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="Enter your email address">
                         </div>
-                        <input type="email"
-                            class="w-full pl-16 pr-4 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]/50 text-gray-700 placeholder:text-gray-400 shadow-lg border border-gray-200 @error('email') border-red-500 @enderror"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            placeholder="Enter your email address"
-                            required>
-                        @error('email')
-                        <p class="text-red-500 text-sm mt-2 ml-4">
-                            <i class="fas fa-exclamation-circle mr-1"></i>
-                            {{ $message }}
-                        </p>
-                        @enderror
+                        <!-- Error Message Container -->
+                        <div class="h-5 mt-1">
+                            @error('email')
+                            <span class="font-bold text-red-500 text-xs italic opacity-50">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -134,6 +137,16 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .shadow-bottom {
+            box-shadow: 0 4px 6px -4px rgba(255, 107, 107, 0.8);
+        }
+
+        .placeholder-bold::placeholder {
+            font-weight: 600;
+        }
+    </style>
 </body>
 
 </html>
